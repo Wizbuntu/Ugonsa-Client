@@ -1,25 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
+// React
+import React from 'react';
 
-function App() {
+// react router dom
+import {Route, Switch} from 'react-router-dom'
+
+// Register Page
+import Register from './Pages/Register'
+
+// Login Page
+import Login from './Pages/Login'
+
+// Dashboard
+import Dashboard from './Pages/Dashboard'
+
+// Dashboard Detail
+import DashboardDetail from './Pages/DashboardDetail'
+
+// Profile
+import Profile from './Pages/Profile'
+
+// import AuthHOC
+import AuthHoc from './Hoc/AuthHoc'
+
+
+
+
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <React.Fragment>
+      
+
+        <Switch>
+        
+        
+       {/* New Registration Route */}
+       <Route path="/register/new" exact component={Register} />
+
+       {/* Login Page Route */}
+       <Route path="/login" exact component={Login} /> 
+      
+      
+      
+       {/* Dashboard Route */}
+        <AuthHoc path="/dashboard" exact component={Dashboard} />
+
+        {/* Dashboard Detail Route */}
+        <AuthHoc path="/user/:id" exact component={DashboardDetail} />
+
+
+        {/* Profile Route */}
+        <AuthHoc path="/profile" exact component={Profile} />
+       
+       
+
+        </Switch>
+
+        
+    
+    </React.Fragment>
+  )
 }
 
 export default App;
