@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 // import react hot toast
 import toast, {Toaster} from 'react-hot-toast';
@@ -7,7 +7,10 @@ import toast, {Toaster} from 'react-hot-toast';
 import {loginValidation} from '../Util/Validations'
 
 // import react router dom
-import {Link, useHistory, Redirect} from 'react-router-dom'
+import {Link, useHistory, useLocation} from 'react-router-dom'
+
+// import react helmet
+import {Helmet}from 'react-helmet'
 
 // import cookie js
 import cookieJs from 'js-cookie'
@@ -20,8 +23,18 @@ import axios from '../Util/axiosConfig'
 // init Login component
 const Login = (props) => {
 
+  // init useLocation
+  const location = useLocation()
+
   // init useHistory
   const history = useHistory()
+
+  // init useEffect
+  useEffect(() => {
+      if(location.state && location.state.message) {
+        return toast.success(location.state.message)
+      }
+  }, [])
 
   // init login data state
   const [loginData, setLoginData] = useState({email: "", password: ""})
@@ -100,6 +113,12 @@ const Login = (props) => {
     <React.Fragment>
 
       <Toaster/>
+
+      <Helmet>
+              
+                <title>Login - Ugonsa</title>
+               
+      </Helmet>
     
         <div className="page-breadcrumb">
           <div className="row">

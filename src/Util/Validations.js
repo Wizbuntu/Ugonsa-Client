@@ -64,28 +64,28 @@ export const registerValidation = (registerData) => {
     }
 
     // validate date of birth
-    if (!registerData.date_of_birth) {
+    if (!registerData.dob) {
         return "Please enter date of birth"
     }
 
     // validate qualification
-    if (!registerData.qualificationData[0].qualification) {
+    if (!registerData.qualifications[0].qualification) {
         return "Please select qualification"
     }
     // validate university attended
-    if (!registerData.qualificationData[0].universityAttended) {
+    if (!registerData.qualifications[0].universityAttended) {
         return "Please enter university attended"
     }
     // validate year of entry
-    if (!registerData.qualificationData[0].yearofEntry) {
+    if (!registerData.qualifications[0].yearofEntry) {
         return "Please enter year of entry"
     }
     // validate year of graduation
-    if (!registerData.qualificationData[0].yearofGraduation) {
+    if (!registerData.qualifications[0].yearofGraduation) {
         return "Please enter year of graduation"
     }
     // validate registration number
-    if (!registerData.qualificationData[0].regNumber) {
+    if (!registerData.qualifications[0].regNumber) {
         return "Please enter registration number"
     }
 

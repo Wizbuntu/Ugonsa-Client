@@ -14,21 +14,36 @@ import NaijaStates from 'naija-state-local-government';
 import toast, { Toaster } from 'react-hot-toast';
 
 // react router dom
-import {Link} from 'react-router-dom'
-
-// paystack payment module
-import { usePaystackPayment } from 'react-paystack';
+import {Link, useHistory} from 'react-router-dom'
 
 // import registerValidation 
 import {registerValidation} from '../Util/Validations'
+
+// import axios 
+import axios from '../Util/axiosConfig'
+
+// import react Helmet
+import {Helmet} from 'react-helmet'
+
+
+// import PaymentModule
+import PaymentModule from '../Util/PaymentModule'
+
+
 
 
 
 // init Register Page
 const Register = () => {
 
+    // init useHistory
+    const history = useHistory()
+
     // init dateOfBirth
     const [dateofBirth, setDateOfBirth] = useState(new Date());
+
+    // init Loading state
+    const [Loading, setLoading] = useState(false)
 
     // init registration state
     const [registrationData, setRegistrationData] = useState({
@@ -115,6 +130,9 @@ const Register = () => {
 
     // init handleSubmit function
     const handleSubmit = () => {
+        // update loading to true
+        setLoading(true)
+
         // get RegisterData
         const registerData = {
             fullName: fullName,
@@ -127,8 +145,8 @@ const Register = () => {
             lga: lga,
             postal_address: postal_address,
             password: password,
-            date_of_birth: dateofBirth,
-            qualificationData: qualificationData
+            dob: dateofBirth,
+            qualifications: qualificationData
         }
 
         // validate registerData
@@ -136,10 +154,35 @@ const Register = () => {
 
         // check if error
         if(error) {
+            // update loading to false
+            setLoading(false)
+
             return toast.error(error)
         }
 
-        console.log(registerData)
+        // axios post request
+        axios.post('/v1/api/register/new', registerData)
+        .then(({data}) => {
+            // update loading to false
+            setLoading(false)
+
+            // check if not success
+            if(!data.success) {
+                console.log(data.data)
+                return toast.error(data.data)
+            }
+
+            // redirect to login
+            history.push({pathname: '/login', state: {message: data.data}})
+        })
+        .catch((error) => {
+            // update loading to false
+            setLoading(false)
+
+            console.log(error)
+            return toast.error("Oops! An error has occured")
+        })
+
     }
 
 
@@ -147,6 +190,13 @@ const Register = () => {
         <React.Fragment>
 
             <Toaster/>
+
+            <Helmet>
+              
+              <title>Register - Ugonsa</title>
+             
+            </Helmet>
+
             <div className="page-container" style={{backgroundColor: "#efefef"}}>
             <div className="page-breadcrumb">
                 <div className="row">
@@ -395,10 +445,12 @@ const Register = () => {
 
 
                                     <div className="form-group">
-                                        <div className="col-sm-12">
-                                            <button type="button" onClick={() => handleSubmit()} className="btn btn-success mt-3">Register</button>
+                                       <div className="col-sm-12">
+                                       <PaymentModule/>
                                         </div>
+                                       
                                     </div>
+                                    
                                 </form>
                             </div>
                             <p className="text-center">Already have an account?

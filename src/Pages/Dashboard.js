@@ -7,6 +7,19 @@ import {useUser} from '../Util/customHooks'
 import Fuse from 'fuse.js'
 import { Link } from 'react-router-dom'
 
+// import Pure modal
+import PureModal from 'react-pure-modal';
+import 'react-pure-modal/dist/react-pure-modal.min.css';
+
+// import react hot toast
+import toast, {Toaster} from 'react-hot-toast';
+
+// import react Helmet
+import {Helmet} from 'react-helmet'
+
+// import axios 
+import axios from '../Util/axiosConfig'
+
 
 // inti searchFuseOptions
 const searchFuseOptions = {
@@ -39,6 +52,16 @@ const Dashboard = (props) => {
     // init userSearch state
     const [UserData, setUserData] = useState([])
 
+    // init modal state
+    const [modal, setModal] = useState(false);
+
+    // init modalData
+    const [modalData, setModalData] = useState({
+        userId: "",
+        regNumber: ""
+    })
+
+ 
     // get users from swr
     const {users, isError, isLoading} = useUser('/v1/api/users/all')
 
@@ -46,6 +69,7 @@ const Dashboard = (props) => {
     useEffect(() => {
     //    check if users, then update userData state
     if(users) {
+        console.log(users)
         setUserData(users.data)
     }
 
@@ -98,8 +122,95 @@ const Dashboard = (props) => {
         } 
     }
 
+
+    // init renderverification status function
+    const renderVerificationStatus = (user) => {
+            // check if user.item exist 
+            if(user.item) {
+                if(user.item.verification_status === "pending") {
+                    return <td><span className="label label-warning label-rounded">pending</span> </td>
+                }
+                if(user.item.verification_status === "verified") {
+                    return <td><span className="label label-success label-rounded">verified</span> </td>
+                }
+                if(user.item.verification_status === "unverified") {
+                    return <td><span className="label label-danger label-rounded">unverified</span> </td>
+                }
+                return <td><span className="label label-primary label-rounded">loading</span> </td>
+            } else {
+
+               if(user.verification_status === "pending") {
+                   return <td><span className="label label-warning label-rounded">pending</span> </td>
+               }
+               if(user.verification_status === "verified") {
+                return <td><span className="label label-success label-rounded">verified</span> </td>
+                }
+                if(user.verification_status === "unverified") {
+                return <td><span className="label label-danger label-rounded">unverified</span> </td>
+                }
+                return <td><span className="label label-primary label-rounded">loading</span> </td>
+            }
+    }
+
+
+    // init handleOpenModal function
+    const handleOpenModal = (userId, regNum) => {
+
+        console.log(userId, regNum)
+
+        // update OpenModal
+        setModal(true)
+
+        // update Modal Data
+        setModalData({...modalData, userId: userId, regNumber: regNum})
+    }
+
+
+    // init deleteUser function
+    const handleDeleteUser = (userId) => {
+        // check if userId
+        if(!userId) {
+            console.log("Delete Error, No user id found")
+            return toast.error("Oops! An error has occured")
+        }
+
+        // axios request to delete user
+        axios.delete(`/v1/api/user/delete/${userId}`)
+        .then(({data}) => {
+
+            // update modal to false
+            setModal(false)
+
+            // check if not success
+            if(!data.success) {
+                console.log(data.data)
+                return toast.error(data.data)
+            }
+
+            // return success
+            return toast.success(data.data)
+        })
+        .catch((error) => {
+           // update modal to false
+           setModal(false)
+
+            console.log(error)
+            return toast.error("Oops! An error has occured, Failed to delete")
+        })
+        
+    }
+
+
     return (
         <React.Fragment>  
+            <Toaster/>
+
+            <Helmet>
+              
+              <title>Ugonsa Dashboard</title>
+             
+            </Helmet>
+
         <div className="container-fluid mt-3">
         <div className="row">
             <div className="col-lg-8 col-xlg-8 col-md-8">
@@ -167,13 +278,8 @@ const Dashboard = (props) => {
                                               <tr>
                                              <td className="txt-oflo"><Link style={{textDecoration: "none", color: "#6A7A8C"}} to={`/user/${user.uid? user.uid : user.item.uid}`}>{user.fullName? user.fullName: user.item.fullName}</Link></td>
                                              <td className="txt-oflo">{user.registrationNumber ? user.registrationNumber: user.item.registrationNumber}</td>
-                                             {user.verification_status || user.item.verification_status === "pending" ? <td><span className="label label-warning label-rounded">pending</span> </td> : 
-                                             user.verification_status || user.item.verification_status === "verified" ? <td><span className="label label-success label-rounded">verified</span> </td> :
-                                             user.verification_status || user.item.verification_status === "unverified" ? <td><span className="label label-danger label-rounded">unverified</span> </td> : 
-                                             <td><span className="label label-secondary label-rounded">loading...</span> </td>
-                                             }
-                                             
-                                             <td><i className="fa fa-trash fa-2x text-danger" style={{cursor: "pointer"}} aria-hidden="true"></i></td>
+                                             {renderVerificationStatus(user)}
+                                             <td className="txt-oflo"> <i onClick={() => handleOpenModal(user.uid || user.item.uid, user.registrationNumber || user.item.registrationNumber)} className="mdi mdi-delete h3 text-danger" style={{cursor: "pointer"}}></i></td>
                                              </tr>
                                      </React.Fragment>
                                      })}
@@ -185,12 +291,30 @@ const Dashboard = (props) => {
                         </table>
                     
                     </div>
-                    <div className="container">
+                    {UserData && UserData.length !== 0 && <div className="container">
                         <button className="btn btn-primary mt-3 mb-3" style={{margin: 'auto', display: "block"}}>Load More</button>
-                    </div>
+                    </div>}
+                    
                 </div>
             </div>
         </div>
+
+        <PureModal
+            footer={
+                <div>
+                <button onClick={() => handleDeleteUser(modalData.userId)} className="btn btn-danger">Delete</button>
+                </div>
+            }
+            isOpen={modal}
+            closeButton="X"
+            closeButtonPosition="header"
+            onClose={() => {
+                setModal(false);
+                return true;
+            }}
+            >
+            <p className="h6">Do you want to delete <br/> {modalData.regNumber} ? </p>
+        </PureModal>
         
         </div>
 
