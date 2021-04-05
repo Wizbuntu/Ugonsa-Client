@@ -9,8 +9,8 @@ import {loginValidation} from '../Util/Validations'
 // import react router dom
 import {Link, useHistory, useLocation} from 'react-router-dom'
 
-// import react helmet
-import {Helmet}from 'react-helmet'
+// import react Helmet
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // import cookie js
 import cookieJs from 'js-cookie'
@@ -111,6 +111,7 @@ const Login = (props) => {
 
   return (
     <React.Fragment>
+      <HelmetProvider>
 
       <Toaster/>
 
@@ -199,7 +200,7 @@ const Login = (props) => {
         </div>
 
      
-
+        </HelmetProvider>
     </React.Fragment>
   )
 }

@@ -9,11 +9,22 @@ import toast, {Toaster} from 'react-hot-toast';
 // import react loading skeleton
 import Skeleton from 'react-loading-skeleton';
 
+// import React-router-dom
+import {useHistory} from 'react-router-dom'
+
+// import Dayjs
+import Dayjs from 'dayjs'
+
+
+
 // init Dashboard Detail
 const DashboardDetail = (props) => {
 
   // init userId
   const userId = props && props.match.params.id
+
+  // init useHistory
+  const history = useHistory()
 
   //   init userData state
   const [userData,
@@ -21,6 +32,9 @@ const DashboardDetail = (props) => {
 
     // init userProfile pic state
     const [userProfilePic, setUserProfilePic] = useState("")
+
+    // init userQualifications state
+    const [userQualifications, setUserQualifications] = useState([])
 
   // init Loading state
   const [Loading,
@@ -46,6 +60,7 @@ const DashboardDetail = (props) => {
         // update userData state
         setUserData(data.data)
         setUserProfilePic(data.data.profile_pic)
+        setUserQualifications(data.data.qualifications || [])
 
       })
       .catch((error) => {
@@ -77,6 +92,16 @@ const DashboardDetail = (props) => {
         return toast.error("Oops! An error has occurred")
       })
     }
+  }
+
+  // init renderPdf function
+  const renderPdf = () => {
+    return history.push({pathname: '/pdf/render', state: {data: userData}})
+  }
+
+  // init renderIdCard
+  const renderIdCard = () => {
+    return history.push({pathname: '/id/generate', state: {data: userData}})
   }
 
   return (
@@ -129,10 +154,15 @@ const DashboardDetail = (props) => {
                         </div>
                       </div>
                     </form>
-                    <button className="btn btn-secondary">
-                      <i className="mdi mdi-download"></i>
-                      Generate ID Card
-                    </button>
+                    {userData.oldMember ? <button className="btn btn-secondary">
+                      View Uploaded ID Card
+                    </button> : 
+                    <button onClick={() => renderIdCard()} className="btn btn-secondary">
+                    <i className="mdi mdi-download"></i>
+                    Generate ID Card
+                  </button>
+                    }
+                    
                   </div>
                 </div>
               : <div className="card">
@@ -150,16 +180,48 @@ const DashboardDetail = (props) => {
               ? <div className="card">
                   <div className="card-body">
                     <form className="form-horizontal form-material">
-                      <div className="form-group">
-                        <label className="col-md-12">Full Name</label>
-                        <div className="col-md-12">
-                          <input
-                            type="text"
-                            value={userData.fullName}
-                            className="form-control form-control-line"
-                            readOnly/>
+                      <div className="row">
+                        <div className="col-md-4">
+                            {/* Surname */}
+                            <div className="form-group">
+                              <label className="col-md-12">Surname</label>
+                              <div className="col-md-12">
+                                <input
+                                  type="text"
+                                  value={userData.surname}
+                                  className="form-control form-control-line"
+                                  readOnly/>
+                              </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4">
+                            {/* First Name */}
+                            <div className="form-group">
+                              <label className="col-md-12">First Name</label>
+                              <div className="col-md-12">
+                                <input
+                                  type="text"
+                                  value={userData.firstName}
+                                  className="form-control form-control-line"
+                                  readOnly/>
+                              </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4">
+                            {/* OtherName */}
+                            <div className="form-group">
+                              <label className="col-md-12">Other Name</label>
+                              <div className="col-md-12">
+                                <input
+                                  type="text"
+                                  value={userData.otherName}
+                                  className="form-control form-control-line"
+                                  readOnly/>
+                              </div>
+                            </div>
                         </div>
                       </div>
+                      
                       {/* Registration Number */}
                       <div className="form-group">
                         <label className="col-md-12">Registration Number</label>
@@ -204,32 +266,22 @@ const DashboardDetail = (props) => {
 
                       <div className="row">
                         {/* DOB */}
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                           <div className="form-group">
                             <label>Date of Birth</label>
 
                             <input
                               type="text"
-                              value={userData.dob}
+                              value={Dayjs(userData.dob).format('DD/MM/YYYY')}
                               className="form-control form-control-line"
                               readOnly/>
 
                           </div>
                         </div>
-                        {/* Age */}
-                        <div className="col-md-4">
-                          <div className="form-group">
-                            <label>Age</label>
-                            <input
-                              type="text"
-                              value={userData.age}
-                              className="form-control form-control-line"
-                              readOnly/>
-                          </div>
-                        </div>
+                        
 
                         {/* Sex */}
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                           <div className="form-group">
                             <label>Gender</label>
                             <input
@@ -280,11 +332,70 @@ const DashboardDetail = (props) => {
                             readOnly></textarea>
                         </div>
                       </div>
+                      <hr/>
+                     
+                      {userQualifications.map((qual, index) => {
+
+                      return <div key={index} className="mt-3">
+                           <div className="form-group">
+                         <div className="col-md-12">Qualification</div>
+                         <div className="col-md-12">
+                         <input
+                              type="text"
+                              value={JSON.parse(qual).qualification}
+                              className="form-control form-control-line"
+                              readOnly/>
+                         </div>
+                       </div>
+
+                       <div className="form-group">
+                         <div className="col-md-12">University Attended</div>
+                         <div className="col-md-12">
+                         <input
+                              type="text"
+                              value={JSON.parse(qual).universityAttended}
+                              className="form-control form-control-line"
+                              readOnly/>
+                         </div>
+                       </div>
+
+                       <div className="row">
+                         <div className="col-md-6">
+                            <div className="form-group">
+                            <div className="col-md-12">Year of Entry</div>
+                            <div className="col-md-12">
+                            <input
+                                  type="number"
+                                  value={JSON.parse(qual).yearofEntry}
+                                  className="form-control form-control-line"
+                                  readOnly/>
+                            </div>
+                          </div>
+                         </div>
+
+                         <div className="col-md-6">
+                            <div className="form-group">
+                            <div className="col-md-12">Year of Graduation</div>
+                            <div className="col-md-12">
+                            <input
+                                  type="text"
+                                  value={JSON.parse(qual).yearofGraduation}
+                                  className="form-control form-control-line"
+                                  readOnly/>
+                            </div>
+                          </div>
+                         </div>
+                       </div>
+                      </div>
+                      })}
+
+
+
                       <div className="form-group">
                         <div className="col-sm-12">
-                          <button className="btn btn-primary">
-                            <i className="mdi mdi-printer-settings"></i>
-                            Print</button>
+                          <button onClick={() => renderPdf()} className="btn btn-primary">
+                            <i className="mdi mdi-printer-settings"></i> 
+                             Print Preview</button>
                         </div>
                       </div>
                     </form>

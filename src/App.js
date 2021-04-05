@@ -19,6 +19,12 @@ import DashboardDetail from './Pages/DashboardDetail'
 // Profile
 import Profile from './Pages/Profile'
 
+// PDF Render
+import PdfRender from './Pages/PDFRender'
+
+// ID card generator
+import IDCardGenerator from './Pages/IDCardGenerator'
+
 // import AuthHOC
 import AuthHoc from './Hoc/AuthHoc'
 
@@ -29,8 +35,6 @@ import AuthHoc from './Hoc/AuthHoc'
 const App = () => {
   return (
     <React.Fragment>
-      
-
         <Switch>
         
         
@@ -51,6 +55,12 @@ const App = () => {
 
         {/* Profile Route */}
         <AuthHoc path="/profile" exact component={Profile} />
+
+        {/* pdf Render */}
+        <AuthHoc path="/pdf/render" exact component={PdfRender} />
+
+         {/* ID Card */}
+         <AuthHoc path="/id/generate" exact component={IDCardGenerator} />
        
        
 

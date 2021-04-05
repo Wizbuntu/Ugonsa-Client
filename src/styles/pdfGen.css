@@ -1,0 +1,334 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.link::before {
+    content: '';
+    background: #202437;
+    height: 3px;
+    width: 0px;
+    position: absolute;
+    bottom: 7px;
+    transition: width linear 0.5s;
+}
+
+.link:hover:before {
+    width: 100px;
+    transition: width linear 0.5s;
+}
+
+.idcontainer {
+    height: 45%;
+    width: 100%;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.id-box {
+    display: flex;
+    color: #444;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0px 0px 5px #777;
+    user-select: none;
+}
+
+
+/* left side css styling section */
+
+.id-box .left-side {
+    background: rgb(243, 38, 20);
+    color: white;
+    flex: 1.5;
+    padding: 20px 0px;
+    position: relative;
+}
+
+.left-side h1 {
+    font-weight: 500;
+    font-size: 1em;
+    background: white;
+    text-align: center;
+    color: rgb(9, 66, 9);
+    border-radius: 15px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.left-side h5 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.left-side .image-layer {
+    margin-top: 20px;
+    margin-bottom: 20px !important;
+    height: 120px;
+    width: 120px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.left-side .image-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.left-side .text {
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+}
+
+.left-side .text p {
+    line-height: 19px;
+    margin-left: 3em;
+}
+
+.left-side .text p span {
+    color: rgb(7, 46, 7);
+    font-weight: 500;
+}
+
+
+/* right side css styling section */
+
+.id-box .right-side {
+    background: rgb(255, 250, 234);
+    flex: 2;
+    height: 100%;
+    padding: 20px;
+    position: relative;
+}
+
+.right-side .logo {
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.right-side .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.schLogo {
+    height: 100px;
+    width: 80px;
+    position: absolute;
+    top: 13%;
+    left: 42.6%;
+    z-index: 3333;
+}
+
+.schLogo img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    object-position: center;
+    margin-right: 3em;
+}
+
+.right-side .header h1 {
+    text-align: center;
+    color: rgb(9, 66, 9);
+    position: relative;
+}
+
+.right-side .header h1::before {
+    content: '';
+    height: 3px;
+    width: 100px;
+    background: #333;
+    position: absolute;
+    bottom: 5px;
+    border-radius: 50%;
+}
+
+.right-side .context1 {
+    text-align: center;
+    z-index: 555;
+}
+
+.right-side .motto {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    font-size: 1.1em;
+}
+
+.right-side .aka {
+    /* color:#60c6ae; */
+    color: rgb(9, 66, 9);
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+
+.right-side .sign {
+    color: red;
+    margin-left: 3em;
+    font-weight: bold;
+}
+
+.right-side .vague {
+    color: white;
+    text-shadow: 1px 1px 2px #777;
+}
+
+.right-side h3 {
+    font-weight: 600;
+    line-height: 25px;
+    margin-bottom: 20px;
+    align-items: center !important;
+    margin-left: 30px;
+}
+
+.right-side .designLogo {
+    height: 100%;
+    width: 10%;
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+}
+
+.right-side .designLogo .flag {
+    display: flex;
+    height: 100%;
+}
+
+.right-side .designLogo .flag div {
+    flex: 1;
+}
+
+.right-side .designLogo .flag .color1 {
+    background: rgb(9, 66, 9);
+}
+
+.right-side .designLogo .flag .color2 {
+    background: white;
+}
+
+.right-side .designLogo .flag .color3 {
+    background: rgb(9, 66, 9);
+}
+
+
+/* background image */
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    z-index: 1;
+    position: absolute;
+}
+
+.background-image img {
+    height: 400px;
+    margin-left: 6em;
+}
+
+@media screen and (max-width:1040px) {
+    /* right side images and logo */
+    .right-side .logo {
+        height: 60px;
+        width: 60px;
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+    .schLogo {
+        height: 70px;
+        width: 80px;
+        position: absolute;
+        top: 20%;
+        left: 43%;
+    }
+    .background-image {
+        width: 90%;
+        height: 100%;
+        opacity: 0.1;
+        z-index: 1;
+        position: absolute;
+    }
+    /* font size for the right side */
+    .context1 {
+        font-size: 15px;
+        height: 80%;
+        padding-left: 2em;
+    }
+    .context1 .vague {
+        opacity: 0.2;
+        font-size: 28px;
+    }
+    /* Left side text and image*/
+    .left-side h1 {
+        width: 80%;
+        height: 8%;
+        overflow: hidden;
+    }
+    .left-side h5 {
+        text-align: center;
+        margin-top: 5px;
+    }
+    .left-side .image-layer {
+        margin-top: 20px;
+        height: 100px;
+        width: 100px;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .left-side .text {
+        position: absolute;
+        bottom: 5px;
+        text-align: center;
+    }
+    .left-side .text p {
+        line-height: 15px;
+        margin-left: 0em;
+        font-size: 16px;
+        padding-bottom: 5px;
+    }
+    /*
+    .left-side .text p span{
+        color:rgb(7, 46, 7);
+        font-weight:500;
+    }     */
+}
+
+@media print {
+    .id-box {
+        width: 80%;
+        height: 60%;
+    }
+    .context1 {
+        font-size: 15px;
+        height: 80%;
+        padding-left: 2em;
+        margin: 1em 1em 0em 0em;
+    }
+    .schLogo {
+        position: absolute;
+        top: 20%;
+        left: 42%;
+    }
+}

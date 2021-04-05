@@ -15,7 +15,7 @@ import 'react-pure-modal/dist/react-pure-modal.min.css';
 import toast, {Toaster} from 'react-hot-toast';
 
 // import react Helmet
-import {Helmet} from 'react-helmet'
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // import axios 
 import axios from '../Util/axiosConfig'
@@ -203,6 +203,7 @@ const Dashboard = (props) => {
 
     return (
         <React.Fragment>  
+            <HelmetProvider>
             <Toaster/>
 
             <Helmet>
@@ -256,7 +257,8 @@ const Dashboard = (props) => {
                         <table className="table table-hover">
                             <thead>
                                 <tr>
-                                    <th className="border-top-0">NAME</th>
+                                    <th className="border-top-0">SURNAME</th>
+                                    <th className="border-top-0">FIRST NAME</th>
                                     <th className="border-top-0">REGISTRATION NUMBER</th>
                                     <th className="border-top-0">STATUS</th>
                                     <th className="border-top-0">ACTION</th>
@@ -276,7 +278,8 @@ const Dashboard = (props) => {
                                      {UserData && UserData.map((user, index) => {
                                      return <React.Fragment key={index}>
                                               <tr>
-                                             <td className="txt-oflo"><Link style={{textDecoration: "none", color: "#6A7A8C"}} to={`/user/${user.uid? user.uid : user.item.uid}`}>{user.fullName? user.fullName: user.item.fullName}</Link></td>
+                                             <td className="txt-oflo"><Link style={{textDecoration: "none", color: "#6A7A8C"}} to={`/user/${user.uid? user.uid : user.item.uid}`}>{user.surname? user.surname: user.item.surname}</Link></td>
+                                             <td className="txt-oflo"><Link style={{textDecoration: "none", color: "#6A7A8C"}} to={`/user/${user.uid? user.uid : user.item.uid}`}>{user.firstName? user.firstName: user.item.firstName}</Link></td>
                                              <td className="txt-oflo">{user.registrationNumber ? user.registrationNumber: user.item.registrationNumber}</td>
                                              {renderVerificationStatus(user)}
                                              <td className="txt-oflo"> <i onClick={() => handleOpenModal(user.uid || user.item.uid, user.registrationNumber || user.item.registrationNumber)} className="mdi mdi-delete h3 text-danger" style={{cursor: "pointer"}}></i></td>
@@ -318,6 +321,7 @@ const Dashboard = (props) => {
         
         </div>
 
+        </HelmetProvider>
         </React.Fragment>
     )
 }

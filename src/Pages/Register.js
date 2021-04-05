@@ -19,16 +19,25 @@ import {Link, useHistory} from 'react-router-dom'
 // import registerValidation 
 import {registerValidation} from '../Util/Validations'
 
+// paystack payment module
+import { usePaystackPayment } from 'react-paystack';
+
+
 // import axios 
 import axios from '../Util/axiosConfig'
 
 // import react Helmet
-import {Helmet} from 'react-helmet'
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 
-// import PaymentModule
-import PaymentModule from '../Util/PaymentModule'
 
+// init config
+const config = {
+    reference: (new Date()).getTime(),
+    email: process.env.REACT_APP_PAYSTACK_EMAIL,
+    amount: 205000,
+    publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+};
 
 
 
@@ -47,11 +56,12 @@ const Register = () => {
 
     // init registration state
     const [registrationData, setRegistrationData] = useState({
-        fullName: "",
+        firstName: "",
+        surname: "",
+        otherName: "", 
         email: "",
         phone: "",
         profile_pic: "",
-        age: "",
         sex: "",
         state_of_origin: "",
         lga: "",
@@ -70,7 +80,7 @@ const Register = () => {
     }])
 
     // destructure registrationData
-    const {fullName, email, phone, profile_pic, age, sex, state_of_origin, lga, postal_address, password } = registrationData
+    const {firstName, surname, otherName, email, phone, profile_pic, sex, state_of_origin, lga, postal_address, password } = registrationData
     
     // init handleChange 
     const handleChange = (data) => (e) => {
@@ -125,7 +135,62 @@ const Register = () => {
         setQualificationData(stateValues)
     }
 
+    
+// ===================== PAYMENT CONFIG =================================
+     // init payment onSuccess
+        const onSuccess = (reference) => {
 
+            // get RegisterData
+            const registerData = {
+                firstName: firstName,
+                surname: surname,
+                otherName: otherName,
+                email: email,
+                phone: phone,
+                profile_pic: profile_pic,
+                sex: sex,
+                state_of_origin: state_of_origin,
+                lga: lga,
+                postal_address: postal_address,
+                password: password,
+                dob: dateofBirth,
+                qualifications: qualificationData
+            }
+
+             // axios post request
+            axios.post('/v1/api/register/new', registerData)
+            .then(({data}) => {
+                // update loading to false
+                setLoading(false)
+
+                // check if not success
+                if(!data.success) {
+                    console.log(data.data)
+                    return toast.error(data.data)
+                }
+
+                // redirect to login
+                history.push({pathname: '/login', state: {message: data.data}})
+            })
+            .catch((error) => {
+                // update loading to false
+                setLoading(false)
+
+                console.log(error)
+                return toast.error("Oops! An error has occured")
+            })
+        };
+    
+        // init payment onClose function
+        const onClose = () => {
+            
+            console.log('closed')
+        }
+
+        // initialize payment
+        const initializePayment = usePaystackPayment(config);
+
+// =======================END PAYMENT CONFIG======================================================
 
 
     // init handleSubmit function
@@ -135,11 +200,12 @@ const Register = () => {
 
         // get RegisterData
         const registerData = {
-            fullName: fullName,
+            firstName: firstName,
+            surname: surname,
+            otherName: otherName,
             email: email,
             phone: phone,
             profile_pic: profile_pic,
-            age: age,
             sex: sex,
             state_of_origin: state_of_origin,
             lga: lga,
@@ -160,34 +226,15 @@ const Register = () => {
             return toast.error(error)
         }
 
-        // axios post request
-        axios.post('/v1/api/register/new', registerData)
-        .then(({data}) => {
-            // update loading to false
-            setLoading(false)
-
-            // check if not success
-            if(!data.success) {
-                console.log(data.data)
-                return toast.error(data.data)
-            }
-
-            // redirect to login
-            history.push({pathname: '/login', state: {message: data.data}})
-        })
-        .catch((error) => {
-            // update loading to false
-            setLoading(false)
-
-            console.log(error)
-            return toast.error("Oops! An error has occured")
-        })
+        // call initializePayment 
+        initializePayment(onSuccess, onClose)
 
     }
 
 
     return (
         <React.Fragment>
+            <HelmetProvider>
 
             <Toaster/>
 
@@ -236,14 +283,39 @@ const Register = () => {
                         <div className="card rounded shadow-sm bg-white">
                             <div className="card-body">
                                 <form className="form-horizontal form-material">
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                                {/* Surname */}
+                                                <div className="form-group">
+                                                    <label className="col-md-12">Surname</label>
+                                                    <div className="col-md-12">
+                                                        <input type="text" placeholder="Enter Surname" value={surname} onChange={handleChange('surname')} className="form-control form-control-line"/>
+                                                    </div>
+                                                </div>
+                                        </div>
 
-                                    {/* Full Name */}
-                                    <div className="form-group">
-                                        <label className="col-md-12">Full Name</label>
-                                        <div className="col-md-12">
-                                            <input type="text" placeholder="Enter Full Name" value={fullName} onChange={handleChange('fullName')} className="form-control form-control-line"/>
+                                        <div className="col-md-4">
+                                                {/* First Name */}
+                                                <div className="form-group">
+                                                    <label className="col-md-12">First Name</label>
+                                                    <div className="col-md-12">
+                                                        <input type="text" placeholder="Enter First Name" value={firstName} onChange={handleChange('firstName')} className="form-control form-control-line"/>
+                                                    </div>
+                                                </div>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                                {/* Other Name */}
+                                                <div className="form-group">
+                                                    <label className="col-md-12">Other Name (if any)</label>
+                                                    <div className="col-md-12">
+                                                        <input type="text" placeholder="Enter Other Name" value={otherName} onChange={handleChange('otherName')} className="form-control form-control-line"/>
+                                                    </div>
+                                                </div>
                                         </div>
                                     </div>
+                                    
+                                    
 
                                     <div className="row">
                                         <div className="col-md-6">
@@ -269,7 +341,7 @@ const Register = () => {
 
                                     
                                     <div className="row">
-                                        <div className="col-md-6">
+                                        <div className="col-md-12">
                                             {/* date of birth */}
                                         <div className="form-group">
                                             <label htmlFor="dob" className="col-md-12">Date of Birth</label>
@@ -278,15 +350,6 @@ const Register = () => {
                                             </div>
                                         </div>
 
-                                        </div>
-                                        <div className="col-md-6">
-                                            {/* Age */}
-                                            <div className="form-group">
-                                                <label htmlFor="age" className="col-md-12">Age</label>
-                                                <div className="col-md-12">
-                                                    <input type="number" placeholder="Enter Age" value={age} onChange={handleChange('age')} className="form-control form-control-line"/>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
 
@@ -446,12 +509,13 @@ const Register = () => {
 
                                     <div className="form-group">
                                        <div className="col-sm-12">
-                                       <PaymentModule/>
+                                            {!Loading? <button type="button" onClick={() => handleSubmit()} className="btn btn-success mt-3">Register</button> : 
+                                            <button type="button" className="btn btn-success mt-3" disabled>Loading...</button>
+                                            }
                                         </div>
-                                       
                                     </div>
-                                    
                                 </form>
+                                
                             </div>
                             <p className="text-center">Already have an account?
                                 <Link to="/login"> Login</Link>
@@ -469,7 +533,7 @@ const Register = () => {
             </footer>
             </div>
        
-            
+            </HelmetProvider>
         </React.Fragment>
     )
 }

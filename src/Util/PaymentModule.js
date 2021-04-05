@@ -19,8 +19,7 @@ const PaymentModule = (props) => {
     const onSuccess = (reference) => {
        
     // call submitFunction from parent
-
-
+    props.onSubmit()
 
     };
 
@@ -38,7 +37,7 @@ const PaymentModule = (props) => {
     return (
         <React.Fragment>
             
-            <button type="button" onClick={() => {initializePayment(onSuccess, onClose)}} className="btn btn-success mt-3">Register</button>
+            
             
         </React.Fragment>
     )

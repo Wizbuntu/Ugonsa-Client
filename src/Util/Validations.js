@@ -7,9 +7,13 @@ import isMobilePhone from 'validator/lib/isMobilePhone'
 // init registerValidation function
 export const registerValidation = (registerData) => {
 
-    // validate fullName
-    if (!registerData.fullName) {
-        return "Please enter full name"
+    // validate firstName
+    if (!registerData.firstName) {
+        return "Please enter first name"
+    }
+    // validate surname
+    if (!registerData.surname) {
+        return "Please enter surname"
     }
 
     // validate email
@@ -31,11 +35,6 @@ export const registerValidation = (registerData) => {
     // validate profile pic
     if (!registerData.profile_pic) {
         return "Please upload your passport photograph"
-    }
-
-    // Validate agge
-    if (!registerData.age) {
-        return "Please enter age"
     }
 
     // validate sex
