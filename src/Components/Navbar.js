@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 // react router dom
 import {useHistory} from 'react-router-dom'
@@ -12,10 +12,20 @@ import cookieJs from 'js-cookie'
 const Navbar = (props) => {
 
 
-
   // init useHistory
   const history = useHistory()
 
+  // init useEffect 
+  useEffect(() => {
+    // check if props
+    if(props.authUser && props.authUser.profilePic) {
+      // update userProfilePic state
+      setUserProfilePic(props.authUser.profilePic)
+    }
+  }, [props])
+
+  // init userProfilePic state
+  const [userProfilePic, setUserProfilePic] = useState("")
 
   // init handleLogout 
   const handleLogout = () => {
@@ -83,11 +93,15 @@ const Navbar = (props) => {
         
                   data-toggle="dropdown"
                   aria-haspopup="true"
-                  aria-expanded="false"><img
-                  src="../../assets/images/profile.png"
-                  alt="user"
-                  className="rounded-circle"
-                  width="31"/></a>
+                  aria-expanded="false">
+                    {props.authUser && props.authUser.admin ?
+                      <img src={`${props.authUser && props.authUser.profilePic ? props.authUser.profilePic : '/assets/images/profile.png'}`}   alt="user"
+                      className="rounded-circle"
+                      width="31" /> :
+                      <img src={`http://localhost:4001/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt="user" className="rounded-circle" width="31" />
+                    }
+                  
+                </a>
                 <div className="dropdown-menu dropdown-menu-right user-dd animated">
                   <div onClick={() => handleLogout()} className="dropdown-item" style={{cursor: "pointer"}}>
                   <i className="fa fa-sign-out mr-3" aria-hidden="true"></i>

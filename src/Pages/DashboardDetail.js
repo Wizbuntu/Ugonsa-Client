@@ -49,8 +49,6 @@ const DashboardDetail = (props) => {
         // update Loading state to false
         setLoading(false)
 
-        console.log(data)
-
         //    check if success
         if (!data.success) {
 
@@ -117,7 +115,7 @@ const DashboardDetail = (props) => {
                   <div className="card-body">
                     <center className="m-t-30">
                       <img
-                        src={`http://localhost:4001/${userProfilePic.replace('/home/wisdom/Documents/projects/ugonsaApp/server/public/', '')}` || '/assets/images/profile.png'}
+                        src={`http://localhost:4001/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'}
                         className="rounded-circle"
                         width="150"/>
                       <h4 className="card-title m-t-20">{userData.registrationNumber}</h4>
@@ -130,7 +128,7 @@ const DashboardDetail = (props) => {
                             : userData.verification_status === "unverified"
                               ? <span className="label label-danger label-rounded">unverified</span>
                               : <span className="label label-secondary label-rounded">loading...</span>
-}
+                      }
 
                       </div>
                     </center>

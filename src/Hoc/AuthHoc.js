@@ -57,15 +57,22 @@ const AuthHoc = ({component: Component, ...rest}) => {
                 return history.push({pathname: '/login'})
 
             } else {
-                
-                // setUser
-                return setUser(data.data)
+
+                 // setUser
+                 setUser(data.data)
+
+                if(!data.data.admin) {
+                    return history.push({pathname: '/profile'})
+                }               
             }
 
 
         })
         .catch((error) => {
             console.log(error)
+            console.log("error has occured")
+            // redirect to login
+            return history.push({pathname: '/login'})
         })
       
     }, [])
@@ -76,11 +83,11 @@ const AuthHoc = ({component: Component, ...rest}) => {
 
             return  <React.Fragment>
                  <div id="main-wrapper" style={{overflow: "inherit"}} data-navbarbg="skin6" data-theme="light" data-layout="vertical" data-sidebartype="full" data-boxed-layout="full">
-                <Navbar />
-                <Sidebar/>
+                <Navbar authUser = {User}/>
+                <Sidebar authUser = {User}/>
                 <div className="page-wrapper" style={{backgroundColor: "#efefef"}}>
                 {/* return Component */}
-                <Component {...props}/>    
+                <Component {...props} authUser = {User}/>    
                 </div>
                 </div>
                 </React.Fragment>

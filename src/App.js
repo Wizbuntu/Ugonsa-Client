@@ -10,6 +10,9 @@ import Register from './Pages/Register'
 // Login Page
 import Login from './Pages/Login'
 
+// Admin Login Page
+import AdminLogin from './Pages/AdminLogin'
+
 // Dashboard
 import Dashboard from './Pages/Dashboard'
 
@@ -19,6 +22,9 @@ import DashboardDetail from './Pages/DashboardDetail'
 // Profile
 import Profile from './Pages/Profile'
 
+// Admin User Page
+import AdminUser from './Pages/AdminUser'
+
 // PDF Render
 import PdfRender from './Pages/PDFRender'
 
@@ -27,8 +33,6 @@ import IDCardGenerator from './Pages/IDCardGenerator'
 
 // import AuthHOC
 import AuthHoc from './Hoc/AuthHoc'
-
-
 
 
 
@@ -43,6 +47,9 @@ const App = () => {
 
        {/* Login Page Route */}
        <Route path="/login" exact component={Login} /> 
+
+        {/* Admin Login Page Route */}
+        <Route path="/admin/login" exact component={AdminLogin} /> 
       
       
       
@@ -55,6 +62,9 @@ const App = () => {
 
         {/* Profile Route */}
         <AuthHoc path="/profile" exact component={Profile} />
+
+        {/* Admin User Route */}
+        <AuthHoc path="/admin/user" exact component={AdminUser} />
 
         {/* pdf Render */}
         <AuthHoc path="/pdf/render" exact component={PdfRender} />

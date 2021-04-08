@@ -14,6 +14,9 @@ import 'react-pure-modal/dist/react-pure-modal.min.css';
 // import react hot toast
 import toast, {Toaster} from 'react-hot-toast';
 
+// react router dom
+import {useHistory} from 'react-router-dom'
+
 // import react Helmet
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
@@ -49,6 +52,9 @@ const filterFuseOptions = {
 // init Dashboard
 const Dashboard = (props) => {
 
+    // init useHistory
+    const history = useHistory()
+
     // init userSearch state
     const [UserData, setUserData] = useState([])
 
@@ -65,20 +71,21 @@ const Dashboard = (props) => {
     // get users from swr
     const {users, isError, isLoading} = useUser('/v1/api/users/all')
 
+
     // init useEffect
     useEffect(() => {
-    //    check if users, then update userData state
-    if(users) {
-        console.log(users)
-        setUserData(users.data)
-    }
-
-
+            
+        // check if users, then update userData state
+        if(users) {
+            console.log(users)
+            setUserData(users.data)
+        }
+        
     }, [users])
     
     // instantiate fuse object
-    const searchFuse = new Fuse(users && users.data, searchFuseOptions)
-    const filterFuse = new Fuse(users && users.data, filterFuseOptions)
+    const searchFuse = new Fuse(users && users.data? users.data : [], searchFuseOptions)
+    const filterFuse = new Fuse(users && users.data? users.data : [], filterFuseOptions)
     
     // init handleSearch function
     const handleSearch = (keyword) => {
@@ -227,12 +234,12 @@ const Dashboard = (props) => {
                     </div>
                 </div>
             </div>
-            <div className="col-lg-4 col-xlg-4 col-md-8">
+            <div className="col-lg-4 col-xlg-4 col-md-4">
                 <div className="card">
                     <div className="card-body pb-1">
                     <form className="form-horizontal form-material">
                     <div className="form-group">                       
-                        <div className="col-sm-12">
+                        <div className="col-sm-12 col-md-12">
                             <select onChange={(event) => handleFilter(event.target.value)} className="form-control form-control-line">
                                 <option value="">select verification status</option>
                                 <option value="verified">verified</option>
@@ -264,6 +271,7 @@ const Dashboard = (props) => {
                                     <th className="border-top-0">ACTION</th>
                                 </tr>
                             </thead>
+                                
                                 {isLoading ? <tbody>
                                         <tr>
                                         <td><p>Loading...</p></td> 
@@ -292,6 +300,11 @@ const Dashboard = (props) => {
                                
                                                  
                         </table>
+
+                        {UserData && UserData.length === 0 && <div className="text-center">
+                                        <img src="/assets/images/no_data.svg" className="img-fluid mt-3" style={{width: 220, height: 220}}></img>
+                                        <h3 className="mt-3 text-secondary text-center mb-5"> <b>No Registered Members Yet</b></h3>
+                                    </div>}
                     
                     </div>
                     {UserData && UserData.length !== 0 && <div className="container">

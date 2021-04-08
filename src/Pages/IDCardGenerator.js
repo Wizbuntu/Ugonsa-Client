@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useRef, useEffect, useState} from 'react'
 
 // import id card styles
 import '../styles/pdfGen.css'
@@ -8,6 +8,9 @@ import {useReactToPrint} from 'react-to-print';
 
 // import React router dom
 import {useLocation, useHistory} from 'react-router-dom'
+
+
+
 
 // init IDCard Generator component
 const IDCardGenerator = () => {
@@ -21,17 +24,39 @@ const IDCardGenerator = () => {
   //   init useHistory
   const history = useHistory()
 
+
   //   init useEffect
   useEffect(() => {
 
     // check if location
     if (location.state && location.state.data) {
-      return console.log(location.state.data)
+    //  update userData state
+    setUserData(location.state.data)
+
+    // update profileImage state
+    setProfileImage(location.state.data.profile_pic)
+
+    // update userQualification state
+    setUserQualification(location.state? location.state.data.qualifications : [])
+
+
     } else {
         history.push({pathname: '/dashboard'})
     }
 
   }, [])
+
+  // init Profile image state
+  const [profileImage, setProfileImage] = useState("")
+
+  // init userData state
+  const [userData, setUserData] = useState({})
+
+
+  // init userQualification state
+  const [userQualification, setUserQualification] = useState([])
+
+
 
   // init handlePrint
   const handlePrint = useReactToPrint({
@@ -39,15 +64,17 @@ const IDCardGenerator = () => {
   });
 
   return (
-
+    <React.Fragment>
     <div className="container">
       <button
         onClick={() => handlePrint()}
-        className="btn btn-secondary float-right m-2">
+        className="btn btn-secondary float-right m-2 mt-5 mb-4 print-button">
         <i className="mdi mdi-printer-settings"></i>
-        Print ID Card</button>
+        Print ID Card</button> 
+        
+       
       <div className="schLogo">
-        <img className="img-fluid" src="/assets/images/pics-logo.png" alt=""/>
+        <img className="img-fluid" src="/assets/images/pics-logo.png" alt="school-logo"/>
       </div>
       <div style={{}}>
         <div className="idcontainer" ref={componentRef}>
@@ -55,26 +82,29 @@ const IDCardGenerator = () => {
           <div className="id-box">
             <div className="left-side">
               <h1>Membership Identity Card</h1>
-              <h5 className="text-white">UGONSA/ID/NAT/0547</h5>
+              <h5 className="text-white">{userData.registrationNumber}</h5>
               <div className="image-layer">
-                <img src="/assets/images/users/2.jpg" alt=""/>
+                <img src={`http://localhost:4001/${profileImage.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt=""/>
               </div>
               <div className="text">
                 <p>
                   <span>Name:</span><br/>
                   <strong>
-                    ABDUL-QADIR HAMMAWA GAMBO</strong><br/>
+                    {`${userData.surname} ${userData.firstName}`}</strong><br/>
                   <span>State of Origin:</span><br/>
                   <strong>
-                    IMO</strong><br/>
+                    {userData.state_of_origin}</strong><br/>
 
                   <span>Local Government Area:</span><br/>
                   <strong>
-                    Aboh Mbaise</strong><br/>
+                    {userData.lga}</strong><br/>
 
-                  <span>Contact:</span><br/>
+                  <span>Phone:</span><br/>
                   <strong>
-                    07031312190</strong><br/>
+                    {userData.phone}</strong><br/>
+                    <span>Email:</span><br/>
+                  <strong>
+                    {userData.email}</strong><br/>
                 </p>
               </div>
             </div>
@@ -100,26 +130,33 @@ const IDCardGenerator = () => {
               </div>
 
               <div className="context1">
-                <p className="email">
+                <p className="email" style={{marginBottom: 0}}>
                   <span style={{
-                    color: "red"
-                  }}>E-mail:
+                    color: "red",
+                  }}>E-mail: 
                   </span>
                   gnan2ugonsa@gmail.com</p>
+                  <p className="email">
+                  <span style={{
+                    color: "red"
+                  }}>Website:
+                   </span>
+                    www.ugonsa.org</p>
                 <h4
                   className="ml-5"
                   style={{
-                  lineHeight: 1.6
+                  lineHeight: 1.6,
+                  marginTop: 10
                 }}>
                   <b>University Graduates of Nursing Association (UGONSA)</b>
                 </h4>
 
-                <i className="motto">Motto: Make a positive change</i>
+                <i className="motto">Slogan: Make a positive change</i>
                 <p className="aka">a.k.a</p>
                 <h3 style={{
                   lineHeight: 1.1
                 }}>Graduate Nurses Association of Nigeria (GNAN)</h3>
-                <h2 className="vague">UGONSA/ID/NAT/024</h2>
+                <h2 className="vague">{userData.registrationNumber}</h2>
               </div>
               <hr/>
 
@@ -129,6 +166,16 @@ const IDCardGenerator = () => {
 
       </div>
     </div>
+
+    <div className="container">
+          <div className="mobile-display text-center">
+            <img src="/assets/images/mobile.svg" className="img-fluid" style={{height: 200}} />
+          <h3 className="text-center text-secondary mt-4 mb-5"><b>ID Card not visible on mobile</b></h3>
+        </div>
+
+          </div>
+
+  </React.Fragment>
   )
 }
 
