@@ -12,16 +12,11 @@ import Skeleton from 'react-loading-skeleton';
 // import React-router-dom
 import {useHistory} from 'react-router-dom'
 
-
 // import Dayjs
 import Dayjs from 'dayjs'
 
 // import react Helmet
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-
-
-
-
 
 
 
