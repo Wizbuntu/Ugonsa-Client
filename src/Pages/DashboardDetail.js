@@ -54,7 +54,7 @@ const DashboardDetail = (props) => {
 
           return toast.error("Oops! An error has occured")
         }
-
+        console.log(data.data)
         // update userData state
         setUserData(data.data)
         setUserProfilePic(data.data.profile_pic)
@@ -133,7 +133,7 @@ const DashboardDetail = (props) => {
                       </div>
                     </center>
 
-                  </div>
+                    </div>
                   <div>
                     <hr/>
                   </div>
@@ -152,9 +152,17 @@ const DashboardDetail = (props) => {
                         </div>
                       </div>
                     </form>
-                    {userData.oldMember ? <button className="btn btn-secondary">
+                    {userData.oldMember ? <React.Fragment>
+                    <div className="col-md-12">
+                    <a target='_blank' href={userData.id_card_upload ? userData.id_card_upload : "#"} className="">
                       View Uploaded ID Card
-                    </button> : 
+                    </a> 
+                    <button onClick={() => renderIdCard()} className="btn btn-secondary mt-3 btn-block">
+                    <i className="mdi mdi-download"></i>
+                    Generate ID Card
+                  </button>
+                    </div>
+                    </React.Fragment> : 
                     <button onClick={() => renderIdCard()} className="btn btn-secondary">
                     <i className="mdi mdi-download"></i>
                     Generate ID Card

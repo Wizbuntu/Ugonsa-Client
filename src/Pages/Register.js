@@ -121,7 +121,6 @@ const Register = () => {
             setQualificationData(stateValues);
     };
 
-
     // init handleQualificationChange
     const handleQualificationChange = (event, index, field) => {
 
@@ -134,7 +133,6 @@ const Register = () => {
         // update qualification Data
         setQualificationData(stateValues)
     }
-
     
 // ===================== PAYMENT CONFIG =================================
      // init payment onSuccess
@@ -273,9 +271,7 @@ const Register = () => {
                                 </center>
                             </div>
                             <div>
-                              
-                                </div>
-                            
+                            </div>
                         </div>
                     </div>
                    

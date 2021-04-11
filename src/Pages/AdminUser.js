@@ -26,10 +26,6 @@ const AdminUser = (props) => {
 
   // init useEffect
   useEffect(() => {
-      // // check if user is an admin
-      // if(props.authUser && !props.authUser.admin) {
-      //   return history.push({pathname: '/profile'})
-      // }
     // fetch all admin Users
     axios.get('/v1/api/admin/all')
     .then(({data}) => {

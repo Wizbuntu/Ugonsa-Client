@@ -7,6 +7,11 @@ import {Route, Switch} from 'react-router-dom'
 // Register Page
 import Register from './Pages/Register'
 
+
+// OldMemberRegister Page
+import OldMemberRegister from './Pages/OldMemberRegister'
+
+
 // Login Page
 import Login from './Pages/Login'
 
@@ -45,12 +50,14 @@ const App = () => {
        {/* New Registration Route */}
        <Route path="/register/new" exact component={Register} />
 
+        {/* Old Member Registration  Route */}
+        <Route path="/register/old" exact component={OldMemberRegister} />
+
        {/* Login Page Route */}
        <Route path="/login" exact component={Login} /> 
 
         {/* Admin Login Page Route */}
         <Route path="/admin/login" exact component={AdminLogin} /> 
-      
       
       
        {/* Dashboard Route */}

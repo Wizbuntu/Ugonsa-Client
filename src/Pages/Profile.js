@@ -131,13 +131,14 @@ const Profile = (props) => {
                       </div>
 
                   <div className="row text-center justify-content-md-center mt-4">
-                  {userData.oldMember ? <button className="btn btn-secondary">
-                      View Uploaded ID Card
-                    </button> : 
-                    <button onClick={() => renderIdCard()} className="btn btn-secondary">
+                  {userData.verification_status === "verified" && <React.Fragment>
+                    <div className="col-md-12">
+                    <button onClick={() => renderIdCard()} className="btn btn-secondary mt-3 btn-block">
                     <i className="mdi mdi-download"></i>
                     Generate ID Card
                   </button>
+                    </div>
+                    </React.Fragment>
                     }
                   </div>
                 </center>
