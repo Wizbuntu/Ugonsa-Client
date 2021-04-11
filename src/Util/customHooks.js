@@ -11,6 +11,7 @@ const fetcher = (url) => axios.get(url).then(res => res.data)
 
 // init useUser
 export const useUser = (url) => {
+
     // get data and error from useSwr
     const { data, error } = useSwr(url, fetcher)
 

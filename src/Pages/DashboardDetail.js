@@ -36,6 +36,9 @@ const DashboardDetail = (props) => {
     // init userQualifications state
     const [userQualifications, setUserQualifications] = useState([])
 
+    // init verificationLoading state
+    const [verificationLoading, setVerificationLoading] = useState(false)
+
   // init Loading state
   const [Loading,
     setLoading] = useState(true)
@@ -43,6 +46,12 @@ const DashboardDetail = (props) => {
 
   //   init useEffect
   useEffect(() => {
+    // check
+    if(!props.authUser) {
+      return history.push({pathname: '/login'})
+    }
+
+    // get user details
     axios
       .get(`/v1/api//user/${userId}`)
       .then(({data}) => {
@@ -52,7 +61,7 @@ const DashboardDetail = (props) => {
         //    check if success
         if (!data.success) {
 
-          return toast.error("Oops! An error has occured")
+          return toast.error(data.message)
         }
         console.log(data.data)
         // update userData state
@@ -65,12 +74,15 @@ const DashboardDetail = (props) => {
         console.log(error)
       })
 
-  }, [])
+  }, [props])
 
 
   // init handle verification status function
   const handleVerificationStatusChange = (status) => {
     if(status) {
+
+      // update verificationLoading
+      setVerificationLoading(true)
 
       // init get status
       const getVerificationStatus = {
@@ -80,6 +92,8 @@ const DashboardDetail = (props) => {
       // console.log(status)
       axios.put(`/v1/api/user/update/${userId}`, getVerificationStatus)
       .then(({data}) => {
+        // update verificationLoading
+        setVerificationLoading(false)
           // check if success
           if(data.success) {
             return toast.success(data.data)
@@ -150,7 +164,9 @@ const DashboardDetail = (props) => {
                             
                           </select>
                         </div>
+                       {verificationLoading &&  <p className="mb-4">Loading...</p>}
                       </div>
+                      
                     </form>
                     {userData.oldMember ? <React.Fragment>
                     <div className="col-md-12">

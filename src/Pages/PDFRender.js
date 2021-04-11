@@ -12,7 +12,7 @@ import Dayjs from 'dayjs'
 
 
 // init pdfRender component
-const PDFRender = () => {
+const PDFRender = (props) => {
 
   // init useLocation
   const location = useLocation()
@@ -25,6 +25,13 @@ const PDFRender = () => {
 
   // init useEffect
   useEffect(() => {
+
+     // check if authenticated
+     if(!props.authUser) {
+      return history.push({pathname: '/login'})
+    }
+
+
     // check if location
     if (location.state && location.state.data) {
 

@@ -26,9 +26,19 @@ const AdminUser = (props) => {
 
   // init useEffect
   useEffect(() => {
+    // check if authenticated
+    if(!props.authUser) {
+      return history.push({pathname: '/login'})
+    }
+
     // fetch all admin Users
     axios.get('/v1/api/admin/all')
     .then(({data}) => {
+
+        // check if success
+        if (!data.success) {
+          return toast.error(data.message)
+        }
       
       // update AdminUserData state
       setAdminUserData(data.data)

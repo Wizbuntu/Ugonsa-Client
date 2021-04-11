@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 
 // import useUser hook
 import {useUser} from '../Util/customHooks'
@@ -67,25 +67,41 @@ const Dashboard = (props) => {
         regNumber: ""
     })
 
- 
-    // get users from swr
-    const {users, isError, isLoading} = useUser('/v1/api/users/all')
+    // init userTotal state
+    const [userTotal, setUserTotal] = useState(0)
 
+    // init pageIndex state
+    const [pageIndex, setPageIndex] = useState(1);
+
+    // init usersHolder
+    const usersHolder = useRef([])
+
+    
+    // get users from api endpoint
+    const {users, isError, isLoading} = useUser(`/v1/api/users/all?page=${pageIndex}`)
 
     // init useEffect
     useEffect(() => {
-            
+           // check if authenticated
+            if(!props.authUser) {
+                return history.push({pathname: '/login'})
+            }
+
         // check if users, then update userData state
-        if(users) {
+        if(users && users.data) {
             console.log(users)
-            setUserData(users.data)
+            usersHolder.current = [...usersHolder.current, ...users.data]
+            console.log(usersHolder.current)
+            setUserData(usersHolder.current)
+            setUserTotal(users.total)
         }
         
     }, [users])
+
     
     // instantiate fuse object
-    const searchFuse = new Fuse(users && users.data? users.data : [], searchFuseOptions)
-    const filterFuse = new Fuse(users && users.data? users.data : [], filterFuseOptions)
+    const searchFuse = new Fuse(usersHolder.current, searchFuseOptions)
+    const filterFuse = new Fuse(usersHolder.current, filterFuseOptions)
     
     // init handleSearch function
     const handleSearch = (keyword) => {
@@ -104,7 +120,7 @@ const Dashboard = (props) => {
             }
 
         } else {
-            setUserData(users && users.data)
+            setUserData(usersHolder.current)
         } 
 
     }
@@ -115,17 +131,18 @@ const Dashboard = (props) => {
          if(keyword) {
             // get Search result
             const userFilterResult = filterFuse.search(`=${keyword}`)
-
+           
             // check if userSearchResult
             if(userFilterResult.length !== 0) {
-                console.log(userFilterResult)
+               
                 setUserData(userFilterResult)
+               
             } else {
                 setUserData(userFilterResult)
             }
 
         } else {
-            setUserData(users && users.data)
+            setUserData(usersHolder.current)
         } 
     }
 
@@ -162,8 +179,6 @@ const Dashboard = (props) => {
 
     // init handleOpenModal function
     const handleOpenModal = (userId, regNum) => {
-
-        console.log(userId, regNum)
 
         // update OpenModal
         setModal(true)
@@ -310,7 +325,8 @@ const Dashboard = (props) => {
                     
                     </div>
                     {UserData && UserData.length !== 0 && <div className="container">
-                        <button className="btn btn-primary mt-3 mb-3" style={{margin: 'auto', display: "block"}}>Load More</button>
+                        {UserData.length < userTotal && <button type="button" onClick={() => setPageIndex(pageIndex + 1)} className="btn btn-primary mt-3 mb-3" style={{margin: 'auto', display: "block"}}>Load More</button>}
+                        
                     </div>}
                     
                 </div>

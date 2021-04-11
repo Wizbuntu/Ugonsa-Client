@@ -10,8 +10,7 @@ axios.interceptors.request.use((config) => {
     // init ugonsaToken
     const ugonsaToken = cookieJs.get('ugonsaToken')
 
-    console.log(ugonsaToken)
-        // check if ugonsaToken
+    // check if ugonsaToken
     if (ugonsaToken) {
         // append token to request headers
         config.headers.authorization = ugonsaToken

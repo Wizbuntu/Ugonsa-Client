@@ -13,7 +13,7 @@ import {useLocation, useHistory} from 'react-router-dom'
 
 
 // init IDCard Generator component
-const IDCardGenerator = () => {
+const IDCardGenerator = (props) => {
 
   // init componentRef
   const componentRef = useRef();
@@ -28,6 +28,11 @@ const IDCardGenerator = () => {
   //   init useEffect
   useEffect(() => {
 
+     // check if authenticated
+     if(!props.authUser) {
+      return history.push({pathname: '/login'})
+    }
+
     // check if location
     if (location.state && location.state.data) {
     //  update userData state
@@ -39,12 +44,11 @@ const IDCardGenerator = () => {
     // update userQualification state
     setUserQualification(location.state? location.state.data.qualifications : [])
 
-
     } else {
         history.push({pathname: '/dashboard'})
     }
 
-  }, [])
+  }, [props])
 
   // init Profile image state
   const [profileImage, setProfileImage] = useState("")
@@ -76,7 +80,7 @@ const IDCardGenerator = () => {
       <div className="schLogo">
         <img className="img-fluid" src="/assets/images/pics-logo.png" alt="school-logo"/>
       </div>
-      <div style={{}}>
+      <div>
         <div className="idcontainer" ref={componentRef}>
 
           <div className="id-box">

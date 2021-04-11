@@ -56,16 +56,17 @@ const AuthHoc = ({component: Component, ...rest}) => {
                 // redirect to login
                 return history.push({pathname: '/login'})
 
-            } else {
+            }else {
 
                  // setUser
                  setUser(data.data)
+
+                
 
                 if(!data.data.admin) {
                     return history.push({pathname: '/profile'})
                 }               
             }
-
 
         })
         .catch((error) => {
