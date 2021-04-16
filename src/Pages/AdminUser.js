@@ -209,6 +209,10 @@ const AdminUser = (props) => {
     setDeleteModal({...deleteModal, isOpen: true, userId: userId, adminSurname: adminSName, adminFirstName: adminFName})
   }
 
+
+
+
+
   // init handleDeleteAdmin function
   const handleDeleteAdmin = (user_Id) => {
     // update deleteBtnLoading
@@ -237,6 +241,20 @@ const AdminUser = (props) => {
 
       // update DeleteModal
       setDeleteModal(false)
+
+      // remove adminUser from admin user data
+      let _adminUsers = [...adminUserData]
+
+      console.log(_adminUsers)
+
+
+
+     const admin_data =  _adminUsers.find((admin_user, index) => {
+        return admin_user.uid !== user_Id
+      })
+
+      // update adminUser State
+      setAdminUserData([admin_data])
 
       // return success
       return toast.success(data.data)

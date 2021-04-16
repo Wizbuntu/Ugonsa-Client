@@ -127,6 +127,7 @@ const Login = (props) => {
               <img
                 width="120"
                 height="120"
+                alt="ugonsa-logo"
                 className="img-fluid"
                 style={{
                 margin: "auto",
@@ -184,7 +185,7 @@ const Login = (props) => {
                        
                       </div>
                       <p className="mt-3">
-                        <a href="#">Forgot Password</a>
+                        <Link to="/forgot/password">Forgot Password</Link>
                       </p>
                     </div>
                     <p className="text-center">Don't have an account?

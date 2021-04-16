@@ -88,7 +88,7 @@ const IDCardGenerator = (props) => {
               <h1>Membership Identity Card</h1>
               <h5 className="text-white">{userData.registrationNumber}</h5>
               <div className="image-layer">
-                <img src={`http://localhost:4001/${profileImage.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt=""/>
+                <img src={`https://register.ugonsa.org/${profileImage.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt=""/>
               </div>
               <div className="text">
                 <p>
@@ -115,7 +115,7 @@ const IDCardGenerator = (props) => {
 
             <div className="right-side">
               <div className="background-image">
-                <img src="/assets/images/coat.png" alt="image"/>
+                <img src="/assets/images/ugonsa_logo.png" alt="image"/>
               </div>
               <div className="designLogo">
                 <div className="flag">

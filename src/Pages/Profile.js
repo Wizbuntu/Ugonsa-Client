@@ -3,9 +3,6 @@ import React, {useState, useEffect} from 'react'
 // import axios
 import axios from '../Util/axiosConfig'
 
-// import react hot toast
-import toast, {Toaster} from 'react-hot-toast';
-
 // import react loading skeleton
 import Skeleton from 'react-loading-skeleton';
 
@@ -48,12 +45,9 @@ const Profile = (props) => {
           // update Loading state to false
           setLoading(false)
 
-          console.log(data.data)
-
           // check if success
           if (!data.success) {
-
-            return toast.error("Oops! An error has occured")
+            return console.log(data)
           }
 
           // update userData state
@@ -103,6 +97,7 @@ const Profile = (props) => {
               <title>Profile - Ugonsa</title>
              
             </Helmet>
+         
 
       <div className="container-fluid">
 
@@ -114,8 +109,9 @@ const Profile = (props) => {
               <div className="card-body">
                 <center className="m-t-30">
                   <img
-                    src={`http://localhost:4001/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'}
+                    src={`https://register.ugonsa.org/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'}
                     className="rounded-circle"
+                    alt="profile-pic"
                     width="150"/>
                   <h4 className="card-title m-t-10">{userData.surname} {userData.firstName}</h4>
                   <div className="row text-center justify-content-md-center" style={{margin: "auto", display: 'block'}}>

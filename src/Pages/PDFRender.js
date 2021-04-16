@@ -90,8 +90,9 @@ const PDFRender = (props) => {
                     margin: "auto",
                     display: 'block'
                   }}
-                    src={`http://localhost:4001/${ProfileImage.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'}
+                    src={`https://register.ugonsa.org/${ProfileImage.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'}
                     className="rounded-circle"
+                    alt="profile"
                     width="150"/>
                   <h4 className="card-title" style={{marginTop: 20}}>{userData.registrationNumber}</h4>
                   <p className="card-title m-t-20">

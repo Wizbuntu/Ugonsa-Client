@@ -1,5 +1,6 @@
 {
     "name": "client",
+    "homepage": "https://register.ugonsa.org/",
     "proxy": "http://localhost:4001",
     "version": "0.1.0",
     "private": true,
@@ -35,7 +36,8 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build && react-snapshot",
+        "build": "react-scripts build",
+        "postbuild": "react-snap",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
@@ -43,6 +45,11 @@
         "extends": [
             "react-app",
             "react-app/jest"
+        ]
+    },
+    "reactSnapshot": {
+        "exclude": [
+            "/"
         ]
     },
     "browserslist": {
@@ -56,5 +63,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "react-snap": "^1.23.0"
     }
 }

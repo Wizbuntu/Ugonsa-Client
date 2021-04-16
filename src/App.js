@@ -2,7 +2,7 @@
 import React from 'react';
 
 // react router dom
-import {Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
 // Register Page
 import Register from './Pages/Register'
@@ -39,13 +39,37 @@ import IDCardGenerator from './Pages/IDCardGenerator'
 // import AuthHOC
 import AuthHoc from './Hoc/AuthHoc'
 
+// import NotFound component
+import NotFound from './Pages/NotFound'
+
+// import ForgotPassword Component
+import ForgotPassword from './Pages/ForgotPassword'
+
+// import PasswordReset component
+import PasswordReset from './Pages/PasswordReset'
+
+// import Home Component
+import Home from './Pages/Home'
+
 
 
 const App = () => {
   return (
-    <React.Fragment>
+    <BrowserRouter>
+    <div>
         <Switch>
         
+        {/* Home Page Route */}
+        <Route exact path="/" component={Home} /> 
+
+         {/* Login Page Route */}
+        <Route path="/login" exact component={Login} /> 
+
+        {/* forgot password route */}
+        <Route path="/forgot/password" exact component={ForgotPassword} /> 
+
+        {/* password reset route */}
+        <Route path="/user/password/reset/:token" exact component={PasswordReset} /> 
         
        {/* New Registration Route */}
        <Route path="/register/new" exact component={Register} />
@@ -53,12 +77,8 @@ const App = () => {
         {/* Old Member Registration  Route */}
         <Route path="/register/old" exact component={OldMemberRegister} />
 
-       {/* Login Page Route */}
-       <Route path="/login" exact component={Login} /> 
-
         {/* Admin Login Page Route */}
         <Route path="/admin/login" exact component={AdminLogin} /> 
-      
       
        {/* Dashboard Route */}
         <AuthHoc path="/dashboard" exact component={Dashboard} />
@@ -79,13 +99,12 @@ const App = () => {
          {/* ID Card */}
          <AuthHoc path="/id/generate" exact component={IDCardGenerator} />
        
-       
-
         </Switch>
 
         
     
-    </React.Fragment>
+    </div>
+    </BrowserRouter>
   )
 }
 

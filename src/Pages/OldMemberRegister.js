@@ -223,7 +223,7 @@ const OldMemberRegister = () => {
             <div className="page-breadcrumb">
                 <div className="row">
                     <div className="col-sm-12 col-md-12 align-self-center">
-                        <img width="150" height="150" className="img-fluid" style={{margin: "auto", display: "block"}} src="/assets/images/ugonsa_logo.png"/>
+                        <img width="150" alt="ugonsa-logo" height="150" className="img-fluid" style={{margin: "auto", display: "block"}} src="/assets/images/ugonsa_logo.png"/>
 
                         <h2 className="page-title text-center">Old Members Registration</h2>
                         <h5 className="text-center mt-4">Please fill the form below to register</h5>

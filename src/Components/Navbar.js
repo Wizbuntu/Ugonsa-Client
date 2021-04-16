@@ -57,9 +57,9 @@ const Navbar = (props) => {
               <a href="index.html" className="logo mt-3">
               <b className="logo-icon mr-3">
                               
-                <img src="/assets/images/ugonsa_logo_small.png" style={{width: 60, height: 70}} alt="homepage" className="dark-logo" />
+                <img src="https://register.ugonsa.org/assets/images/ugonsa_logo_small.png" style={{width: 60, height: 70}} alt="homepage" className="dark-logo" />
                               
-                <img src="/assets/images/ugonsa_logo_small.png" style={{width: 60, height: 70}} alt="homepage" className="light-logo" />
+                <img src="https://register.ugonsa.org/assets/images/ugonsa_logo_small.png" style={{width: 60, height: 70}} alt="homepage" className="light-logo" />
                 </b>
                 <span className="logo-text">
                    <b style={{color: "#fff"}}>UGONSA</b>
@@ -98,7 +98,7 @@ const Navbar = (props) => {
                       <img src={`${props.authUser && props.authUser.profilePic ? props.authUser.profilePic : '/assets/images/profile.png'}`}   alt="user"
                       className="rounded-circle"
                       width="31" /> :
-                      <img src={`http://localhost:4001/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt="user" className="rounded-circle" width="31" />
+                      <img src={`https://register.ugonsa.org/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt="user" className="rounded-circle" width="31" />
                     }
                   
                 </a>

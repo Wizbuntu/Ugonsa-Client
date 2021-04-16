@@ -129,12 +129,13 @@ const DashboardDetail = (props) => {
                   <div className="card-body">
                     <center className="m-t-30">
                       <img
-                        src={`http://localhost:4001/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'}
+                        src={`https://register.ugonsa.org/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'}
                         className="rounded-circle"
+                        alt="profile-pic"
                         width="150"/>
                       <h4 className="card-title m-t-20">{userData.registrationNumber}</h4>
 
-                      <div className="row text-center justify-content-md-center">
+                      <div className="row text-center justify-content-md-center" style={{margin: "auto", display: 'block'}}>
                         {userData.verification_status === "pending"
                           ? <span className="label label-warning label-rounded">pending</span>
                           : userData.verification_status === "verified"
@@ -170,7 +171,7 @@ const DashboardDetail = (props) => {
                     </form>
                     {userData.oldMember ? <React.Fragment>
                     <div className="col-md-12">
-                    <a target='_blank' href={userData.id_card_upload ? userData.id_card_upload : "#"} className="">
+                    <a target='_blank' rel="noreferrer" href={userData.id_card_upload ? userData.id_card_upload : "#"} className="">
                       View Uploaded ID Card
                     </a> 
                     <button onClick={() => renderIdCard()} className="btn btn-secondary mt-3 btn-block">

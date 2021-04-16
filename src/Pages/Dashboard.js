@@ -1,7 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
 
-// import useUser hook
-import {useUser} from '../Util/customHooks'
 
 // import fuse js
 import Fuse from 'fuse.js'
@@ -49,6 +47,7 @@ const filterFuseOptions = {
 }
 
 
+
 // init Dashboard
 const Dashboard = (props) => {
 
@@ -60,6 +59,9 @@ const Dashboard = (props) => {
 
     // init modal state
     const [modal, setModal] = useState(false);
+
+    // init Loading state 
+    const [Loading, setLoading] = useState(true)
 
     // init modalData
     const [modalData, setModalData] = useState({
@@ -75,10 +77,7 @@ const Dashboard = (props) => {
 
     // init usersHolder
     const usersHolder = useRef([])
-
     
-    // get users from api endpoint
-    const {users, isError, isLoading} = useUser(`/v1/api/users/all?page=${pageIndex}`)
 
     // init useEffect
     useEffect(() => {
@@ -87,16 +86,30 @@ const Dashboard = (props) => {
                 return history.push({pathname: '/login'})
             }
 
-        // check if users, then update userData state
-        if(users && users.data) {
-            console.log(users)
-            usersHolder.current = [...usersHolder.current, ...users.data]
-            console.log(usersHolder.current)
-            setUserData(usersHolder.current)
-            setUserTotal(users.total)
-        }
+            // invoke getUsers function
+            getUsers(pageIndex)
         
-    }, [users])
+    }, [])
+
+
+    // init getUsers function
+    const getUsers = (pageIndex) => {
+        axios.get(`/v1/api/users/all?page=${pageIndex}`)
+        .then(({data}) => {
+            // update Loading state to false
+            setLoading(false)
+            // check if users, then update userData state
+            if(data && data.data) {
+                usersHolder.current = [...usersHolder.current, ...data.data]
+
+                setUserData(usersHolder.current)
+                setUserTotal(data.total) 
+            } 
+            })
+        .catch((error) => {
+            console.log(error)
+        })
+    }
 
     
     // instantiate fuse object
@@ -122,7 +135,6 @@ const Dashboard = (props) => {
         } else {
             setUserData(usersHolder.current)
         } 
-
     }
 
     // init handleFilter function
@@ -145,7 +157,6 @@ const Dashboard = (props) => {
             setUserData(usersHolder.current)
         } 
     }
-
 
     // init renderverification status function
     const renderVerificationStatus = (user) => {
@@ -209,7 +220,19 @@ const Dashboard = (props) => {
                 return toast.error(data.data)
             }
 
+            // get UserData
+            let _userData = [...UserData]
             
+            // find userData by id
+            const user_data = _userData.filter((user) => {
+                return user.uid !== userId
+            })
+
+            // update userData state
+            setUserData(user_data)
+
+            // update UserHolder
+            usersHolder.current = user_data
 
             // return success
             return toast.success(data.data)
@@ -222,6 +245,16 @@ const Dashboard = (props) => {
             return toast.error("Oops! An error has occured, Failed to delete")
         })
         
+    }
+
+
+    // init handleLoadMore function
+    const handleLoadMore = () => {
+        // invoke getUsers
+        getUsers(pageIndex + 1)
+
+        // update pageIndex state
+        setPageIndex(pageIndex + 1)
     }
 
 
@@ -277,7 +310,11 @@ const Dashboard = (props) => {
                         <h4 className="card-title">Registered Members</h4>
                     </div>
                     <div className="table-responsive">
-                    
+                    {Loading ? <div className="container"><p>Loading...</p></div> :
+                    UserData.length === 0 ? <div className="text-center">
+                                        <img alt="not-found" src="/assets/images/no_data.svg" className="img-fluid mt-3" style={{width: 220, height: 220}}></img>
+                                        <h3 className="mt-3 text-secondary text-center mb-5"> <b>Not Found</b></h3>
+                                    </div> :
                         <table className="table table-hover">
                             <thead>
                                 <tr>
@@ -288,16 +325,6 @@ const Dashboard = (props) => {
                                     <th className="border-top-0">ACTION</th>
                                 </tr>
                             </thead>
-                                
-                                {isLoading ? <tbody>
-                                        <tr>
-                                        <td><p>Loading...</p></td> 
-                                        <td><p>Loading...</p></td> 
-                                        <td><p>Loading...</p></td> 
-                                        <td><p>Loading...</p></td> 
-                                        </tr>
-                                       
-                                    </tbody>:
                                      <tbody>
                                     
                                      {UserData && UserData.map((user, index) => {
@@ -312,20 +339,17 @@ const Dashboard = (props) => {
                                      </React.Fragment>
                                      })}
                                  </tbody>
-                                 
-                                }
-                               
-                                                 
+                                
+                                                       
                         </table>
 
-                        {UserData && UserData.length === 0 && <div className="text-center">
-                                        <img src="/assets/images/no_data.svg" className="img-fluid mt-3" style={{width: 220, height: 220}}></img>
-                                        <h3 className="mt-3 text-secondary text-center mb-5"> <b>No Registered Members Yet</b></h3>
-                                    </div>}
+                        }
+
+                       
                     
                     </div>
                     {UserData && UserData.length !== 0 && <div className="container">
-                        {UserData.length < userTotal && <button type="button" onClick={() => setPageIndex(pageIndex + 1)} className="btn btn-primary mt-3 mb-3" style={{margin: 'auto', display: "block"}}>Load More</button>}
+                        {UserData.length < userTotal && <button type="button" onClick={() => handleLoadMore()} className="btn btn-primary mt-3 mb-3" style={{margin: 'auto', display: "block"}}>Load More</button>}
                         
                     </div>}
                     

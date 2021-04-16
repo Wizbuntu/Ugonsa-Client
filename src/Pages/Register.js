@@ -22,6 +22,9 @@ import {registerValidation} from '../Util/Validations'
 // paystack payment module
 import { usePaystackPayment } from 'react-paystack';
 
+// Footer
+import Footer from '../Components/Footer'
+
 
 // import axios 
 import axios from '../Util/axiosConfig'
@@ -163,7 +166,7 @@ const Register = () => {
 
                 // check if not success
                 if(!data.success) {
-                    console.log(data.data)
+                   
                     return toast.error(data.data)
                 }
 
@@ -246,7 +249,7 @@ const Register = () => {
             <div className="page-breadcrumb">
                 <div className="row">
                     <div className="col-sm-12 col-md-12 align-self-center">
-                        <img width="150" height="150" className="img-fluid" style={{margin: "auto", display: "block"}} src="/assets/images/ugonsa_logo.png"/>
+                        <img width="150" height="150" alt="ugonsa-logo" className="img-fluid" style={{margin: "auto", display: "block"}} src="/assets/images/ugonsa_logo.png"/>
 
                         <h2 className="page-title text-center">Create an Account</h2>
                         <h5 className="text-center mt-4">Please fill the form below to register</h5>
@@ -523,10 +526,7 @@ const Register = () => {
                
             </div>
           
-            <footer className="footer text-center">
-                All Rights Reserved by UGONSA. Designed and Developed by
-                <a href="https://idealab.com.ng/"> IdeaLab</a>.
-            </footer>
+            <Footer/>
             </div>
        
             </HelmetProvider>
