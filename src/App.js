@@ -64,6 +64,9 @@ const App = () => {
 
          {/* Login Page Route */}
         <Route path="/login" exact component={Login} /> 
+        
+         {/* Admin Login Page Route */}
+         <Route path="/admin/login" exact component={AdminLogin} /> 
 
         {/* forgot password route */}
         <Route path="/forgot/password" exact component={ForgotPassword} /> 
@@ -77,8 +80,7 @@ const App = () => {
         {/* Old Member Registration  Route */}
         <Route path="/register/old" exact component={OldMemberRegister} />
 
-        {/* Admin Login Page Route */}
-        <Route path="/admin/login" exact component={AdminLogin} /> 
+       
       
        {/* Dashboard Route */}
         <AuthHoc path="/dashboard" exact component={Dashboard} />

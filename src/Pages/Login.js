@@ -124,6 +124,7 @@ const Login = (props) => {
         <div className="page-breadcrumb">
           <div className="row">
             <div className="col-sm-12 col-md-12 align-self-center">
+              <Link to="/">
               <img
                 width="120"
                 height="120"
@@ -134,6 +135,7 @@ const Login = (props) => {
                 display: "block"
               }}
                 src="/assets/images/ugonsa_logo.png"/>
+                </Link>
 
               <h2 className="page-title text-center">Login to your account</h2>
 

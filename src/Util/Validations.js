@@ -43,13 +43,18 @@ export const registerValidation = (registerData) => {
     }
 
     // validate state of origin
+    if (!registerData.country) {
+        return "Please select country"
+    }
+
+    // validate state of origin
     if (!registerData.state_of_origin) {
         return "Please select state of origin"
     }
 
     // validate lga
     if (!registerData.lga) {
-        return "Please select LGA"
+        return "Please select LGA or County"
     }
 
     // validate postal address

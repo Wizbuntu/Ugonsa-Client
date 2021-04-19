@@ -7,8 +7,8 @@ import UploadUtil from '../Util/uploadUtil'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-// import Nigeria state local government
-import NaijaStates from 'naija-state-local-government';
+// react country and state
+import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
 
 // import react hot toast
 import toast, { Toaster } from 'react-hot-toast';
@@ -43,8 +43,6 @@ const config = {
 };
 
 
-
-
 // init Register Page
 const Register = () => {
 
@@ -66,12 +64,19 @@ const Register = () => {
         phone: "",
         profile_pic: "",
         sex: "",
-        state_of_origin: "",
         lga: "",
         postal_address: "",
         password: ""
 
     })
+
+    // init country state
+    const [country, setCountry] = useState("")
+
+    // init state_of_origin
+    const [state_of_origin, setStateOfOrigin] = useState("")
+
+
 
     // init qualificationData state
     const [qualificationData, setQualificationData] = useState([{
@@ -83,7 +88,7 @@ const Register = () => {
     }])
 
     // destructure registrationData
-    const {firstName, surname, otherName, email, phone, profile_pic, sex, state_of_origin, lga, postal_address, password } = registrationData
+    const {firstName, surname, otherName, email, phone, profile_pic, sex, lga, postal_address, password } = registrationData
     
     // init handleChange 
     const handleChange = (data) => (e) => {
@@ -150,6 +155,7 @@ const Register = () => {
                 phone: phone,
                 profile_pic: profile_pic,
                 sex: sex,
+                country: country,
                 state_of_origin: state_of_origin,
                 lga: lga,
                 postal_address: postal_address,
@@ -208,6 +214,7 @@ const Register = () => {
             phone: phone,
             profile_pic: profile_pic,
             sex: sex,
+            country: country,
             state_of_origin: state_of_origin,
             lga: lga,
             postal_address: postal_address,
@@ -249,7 +256,7 @@ const Register = () => {
             <div className="page-breadcrumb">
                 <div className="row">
                     <div className="col-sm-12 col-md-12 align-self-center">
-                        <img width="150" height="150" alt="ugonsa-logo" className="img-fluid" style={{margin: "auto", display: "block"}} src="/assets/images/ugonsa_logo.png"/>
+                       <Link to="/"><img width="150" height="150" alt="ugonsa-logo" className="img-fluid" style={{margin: "auto", display: "block"}} src="/assets/images/ugonsa_logo.png"/></Link>
 
                         <h2 className="page-title text-center">Create an Account</h2>
                         <h5 className="text-center mt-4">Please fill the form below to register</h5>
@@ -371,53 +378,50 @@ const Register = () => {
 
                                     <div className="row">
                                         <div className="col-md-6">
-                                            {/* State of origin */}
+                                            {/* Country*/}
                                             <div className="form-group">
-                                                <label className="col-sm-12">State of Origin</label>
+                                                <label className="col-sm-12">Country</label>
                                                 <div className="col-sm-12">
-                                                    <select onChange={handleChange('state_of_origin')} className="form-control form-control-line">
-                                                        <option value="">Select State of Origin</option>
-                                                        {NaijaStates.states().map((state, index) => {
-                                                            return (
-                                                                <option key={index} value={state}>{state}</option>
-                                                            )
-                                                        })}
-                                                        
-                                                        
-                                                    </select>
+                                                <CountryDropdown
+                                                    classes="form-control form-control-line"
+                                                    value={country}
+                                                    onChange={(val) => setCountry(val)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-md-6">
-                                            {/* Lga */}
+                                            {/* State */}
                                             <div className="form-group">
-                                                <label className="col-sm-12">Local Government Area (LGA)</label>
+                                                <label className="col-sm-12">State of Origin</label>
                                                 <div className="col-sm-12">
-                                                    <select onChange={handleChange('lga')} className="form-control form-control-line">
-                                                        <option value="">Select Lga</option>
-                                                        {state_of_origin && NaijaStates.lgas(state_of_origin).lgas.map((_lga, index) => {
-                                                            return (
-                                                                <option key={index} value={_lga}>{_lga}</option>
-                                                            )
-                                                        })}
-                                                        
-                                                        
-                                                        
-                                                    </select>
+                                                    <RegionDropdown
+                                                    classes="form-control form-control-line"
+                                                    country={country}
+                                                    value={state_of_origin}
+                                                    onChange={(val) => setStateOfOrigin(val)} /> 
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    
-
-                                     
+                                    {/* LGA */}
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="form-group">
+                                                    <label htmlFor="lga" className="col-md-12">Local Government Area or County</label>
+                                                    <div className="col-md-12">
+                                                        <input type="text" placeholder="Enter Local Government Area (LGA) or County" value={lga} onChange={handleChange('lga')} className="form-control form-control-line"/>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>   
 
                                     {/* Postal Address */}
                                     <div className="form-group">
-                                        <label htmlFor="address" className="col-md-12">Postal Address</label>
+                                        <label htmlFor="address" className="col-md-12">Permanent Address</label>
                                         <div className="col-md-12">
-                                            <textarea type="text" value={postal_address} onChange={handleChange('postal_address')} placeholder="Enter Postal Address" className="form-control form-control-line"></textarea>
+                                            <textarea type="text" value={postal_address} onChange={handleChange('postal_address')} placeholder="Enter Permanent Address" className="form-control form-control-line"></textarea>
                                         </div>
                                     </div>
 
@@ -503,9 +507,18 @@ const Register = () => {
                                         <div className="col-md-12">
                                             <input type="password" value={password} onChange={handleChange('password')} placeholder="Enter Password" className="form-control form-control-line" />
                                         </div>
+                                      
                                     </div>
 
-
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="container">
+                                            <p><b>Note: There is no refund of money after completing payment</b></p>
+                                            </div>
+                                       
+                                        </div>
+                                    </div>
+                                    
                                     <div className="form-group">
                                        <div className="col-sm-12">
                                             {!Loading? <button type="button" onClick={() => handleSubmit()} className="btn btn-success mt-3">Register</button> : 

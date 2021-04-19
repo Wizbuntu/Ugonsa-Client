@@ -63,6 +63,7 @@ const Home = () => {
           </div>
           <div  className=" container mt-3 text-center mb-5">
           <h5>Already Registered? <Link to="/login" className="text-primary">Login</Link></h5>
+          <h5><a href="https://ugonsa.org" target="_blank" className="text-primary">Go to website</a></h5>
           </div>
          
         </div>

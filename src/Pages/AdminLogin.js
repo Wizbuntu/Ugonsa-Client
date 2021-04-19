@@ -184,9 +184,7 @@ const Login = (props) => {
                         }
                        
                       </div>
-                      <p className="mt-3">
-                        <a href="#">Forgot Password</a>
-                      </p>
+                     
                     </div>
                    
                   </form>

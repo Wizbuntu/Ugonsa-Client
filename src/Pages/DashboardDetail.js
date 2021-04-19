@@ -132,7 +132,8 @@ const DashboardDetail = (props) => {
                         src={`https://register.ugonsa.org/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'}
                         className="rounded-circle"
                         alt="profile-pic"
-                        width="150"/>
+                        style={{height: "150px", width: "150px", objectFit: "cover", objectPosition: "center"}}
+                       />
                       <h4 className="card-title m-t-20">{userData.registrationNumber}</h4>
 
                       <div className="row text-center justify-content-md-center" style={{margin: "auto", display: 'block'}}>
@@ -377,6 +378,17 @@ const DashboardDetail = (props) => {
                          <input
                               type="text"
                               value={JSON.parse(qual).universityAttended}
+                              className="form-control form-control-line"
+                              readOnly/>
+                         </div>
+                       </div>
+
+                       <div className="form-group">
+                         <div className="col-md-12">Registration Number</div>
+                         <div className="col-md-12">
+                         <input
+                              type="text"
+                              value={JSON.parse(qual).regNumber}
                               className="form-control form-control-line"
                               readOnly/>
                          </div>

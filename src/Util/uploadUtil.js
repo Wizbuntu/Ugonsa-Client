@@ -34,7 +34,7 @@ const uppy = new Uppy({
 
 // use hxrUpload
 uppy.use(XHRUpload, {
-    endpoint: "https://register.ugonsa.org/v1/api/upload",
+    endpoint: "http://localhost:4001/v1/api/upload",
     method: 'post',
     formData: true,
     fieldName: 'profile_pic',

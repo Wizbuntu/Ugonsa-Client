@@ -10,6 +10,10 @@ import "react-datepicker/dist/react-datepicker.css";
 // import Nigeria state local government
 import NaijaStates from 'naija-state-local-government';
 
+// react country and state
+import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+
+
 // import react hot toast
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -50,7 +54,6 @@ const OldMemberRegister = () => {
          registrationNumber: "",
          profile_pic: "",
          sex: "",
-         state_of_origin: "",
          lga: "",
          postal_address: "",
          password: ""
@@ -61,7 +64,7 @@ const OldMemberRegister = () => {
     const [uploadIDCard, setUploadIDCard] = useState("")
 
      // destructure registrationData
-    const {firstName, surname, otherName, email, phone, registrationNumber, profile_pic, sex, state_of_origin, lga, postal_address, password } = registrationData
+    const {firstName, surname, otherName, email, phone, registrationNumber, profile_pic, sex, lga, postal_address, password } = registrationData
     
 
      // init qualificationData state
@@ -72,6 +75,12 @@ const OldMemberRegister = () => {
         yearofGraduation: "",
         regNumber: ""
     }])
+
+    // init country state
+    const [country, setCountry] = useState("")
+
+    // init state_of_origin
+    const [state_of_origin, setStateOfOrigin] = useState("")
 
     
     // init handleChange 
@@ -367,47 +376,45 @@ const OldMemberRegister = () => {
                                    </div>
 
                                    <div className="row">
-                                       <div className="col-md-6">
-                                           {/* State of origin */}
-                                           <div className="form-group">
-                                               <label className="col-sm-12">State of Origin</label>
-                                               <div className="col-sm-12">
-                                                   <select onChange={handleChange('state_of_origin')} className="form-control form-control-line">
-                                                       <option value="">Select State of Origin</option>
-                                                       {NaijaStates.states().map((state, index) => {
-                                                           return (
-                                                               <option key={index} value={state}>{state}</option>
-                                                           )
-                                                       })}
-                                                       
-                                                       
-                                                   </select>
-                                               </div>
-                                           </div>
-                                       </div>
-                                       <div className="col-md-6">
-                                           {/* Lga */}
-                                           <div className="form-group">
-                                               <label className="col-sm-12">Local Government Area (LGA)</label>
-                                               <div className="col-sm-12">
-                                                   <select onChange={handleChange('lga')} className="form-control form-control-line">
-                                                       <option value="">Select Lga</option>
-                                                       {state_of_origin && NaijaStates.lgas(state_of_origin).lgas.map((_lga, index) => {
-                                                           return (
-                                                               <option key={index} value={_lga}>{_lga}</option>
-                                                           )
-                                                       })}
-                                                       
-                                                       
-                                                       
-                                                   </select>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>
-
+                                        <div className="col-md-6">
+                                            {/* Country*/}
+                                            <div className="form-group">
+                                                <label className="col-sm-12">Country</label>
+                                                <div className="col-sm-12">
+                                                <CountryDropdown
+                                                    classes="form-control form-control-line"
+                                                    value={country}
+                                                    onChange={(val) => setCountry(val)} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            {/* State */}
+                                            <div className="form-group">
+                                                <label className="col-sm-12">State of Origin</label>
+                                                <div className="col-sm-12">
+                                                    <RegionDropdown
+                                                    classes="form-control form-control-line"
+                                                    country={country}
+                                                    value={state_of_origin}
+                                                    onChange={(val) => setStateOfOrigin(val)} /> 
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                    
-
+                                     {/* LGA */}
+                                     <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="form-group">
+                                                    <label htmlFor="lga" className="col-md-12">Local Government Area or County</label>
+                                                    <div className="col-md-12">
+                                                        <input type="text" placeholder="Enter Local Government Area (LGA) or County" value={lga} onChange={handleChange('lga')} className="form-control form-control-line"/>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>  
                                     
 
                                    {/* Postal Address */}
