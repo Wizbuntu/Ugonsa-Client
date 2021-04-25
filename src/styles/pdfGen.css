@@ -71,9 +71,10 @@ body {
 
 .left-side .image-layer {
     margin-bottom: 20px !important;
-    height: 120px;
-    width: 120px;
+    height: 100px;
+    width: 100px;
     background: white;
+    margin-top: 15px;
     border-radius: 50%;
     position: absolute;
     top: 30%;
@@ -96,8 +97,13 @@ body {
 }
 
 .left-side .text p {
-    line-height: 19px;
-    margin-left: 6em;
+    line-height: 15px;
+    margin-left: 5em;
+    padding-bottom: 5px;
+}
+
+.verification_stats {
+    z-index: 99999;
 }
 
 .left-side .text p span {
@@ -250,7 +256,15 @@ body {
 
 .background-image img {
     height: 400px;
-    margin-left: 6em;
+    margin-left: 3em;
+}
+
+@media screen and (max-width:991px) {
+    .left-side .text p {
+        line-height: 15px !important;
+        margin-left: 4em !important;
+        padding-bottom: 2em !important;
+    }
 }
 
 @media screen and (max-width:1040px) {
@@ -311,8 +325,8 @@ body {
     }
     .left-side .text p {
         line-height: 15px;
-        margin-left: 4em;
-        padding-bottom: 40px;
+        margin-left: 5em;
+        padding-bottom: 15px;
     }
     /*
     .left-side .text p span{

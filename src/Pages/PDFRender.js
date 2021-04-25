@@ -151,6 +151,12 @@ const PDFRender = (props) => {
                      </tr>
                      <tr>
                        
+                       <th scope="col">Country</th>
+                       <th scope="col"><center>{userData.country}</center></th>
+                      
+                     </tr>
+                     <tr>
+                       
                        <th scope="col">State Of Origin</th>
                        <th scope="col"><center>{userData.state_of_origin}</center></th>
                       
@@ -159,6 +165,12 @@ const PDFRender = (props) => {
                        
                        <th scope="col">Local Government Area (LGA)</th>
                        <th scope="col"><center>{userData.lga}</center></th>
+                      
+                     </tr>
+                     <tr>
+                       
+                       <th scope="col">Permanent Address</th>
+                       <th scope="col"><center>{userData.address}</center></th>
                       
                      </tr>
                     </thead>

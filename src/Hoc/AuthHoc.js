@@ -56,7 +56,8 @@ const AuthHoc = ({component: Component, ...rest}) => {
 
                  // setUser
                  setUser(data.data)
-
+                
+                //  check if user is not admin
                 if(!data.data.admin) {
                     return history.push({pathname: '/profile'})
                 }               
@@ -75,7 +76,7 @@ const AuthHoc = ({component: Component, ...rest}) => {
     return (
         // return Route
         <Route {...rest} render={(props) => {
-
+            
             return  <React.Fragment>
                 {Loading.current ?  <div className="preloader">
                         <div className="lds-ripple">

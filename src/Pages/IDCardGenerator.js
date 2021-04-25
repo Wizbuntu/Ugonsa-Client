@@ -87,6 +87,12 @@ const IDCardGenerator = (props) => {
             <div className="left-side">
               <h1>Membership Identity Card</h1>
               <h5 className="text-white">{userData.registrationNumber}</h5>
+               <div className="text-center verification_stats">
+               {userData.verification_status === "verified" && 
+                <span className="label label-success label-rounded text-center">verified</span>
+                }
+                </div>
+             
               <div className="image-layer">
                 <img src={`https://register.ugonsa.org/${profileImage.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt=""/>
               </div>
@@ -95,6 +101,9 @@ const IDCardGenerator = (props) => {
                   <span>Name:</span><br/>
                   <strong>
                     {`${userData.surname} ${userData.firstName}`}</strong><br/>
+                    <span>Country:</span><br/>
+                  <strong>
+                    {userData.country}</strong><br/>
                   <span>State of Origin:</span><br/>
                   <strong>
                     {userData.state_of_origin}</strong><br/>
@@ -115,7 +124,7 @@ const IDCardGenerator = (props) => {
 
             <div className="right-side">
               <div className="background-image">
-                <img src="/assets/images/ugonsa_logo.png" alt="image"/>
+                <img className="mt-4" src="/assets/images/ugonsa_logo.png" alt="image"/>
               </div>
               <div className="designLogo">
                 <div className="flag">
@@ -163,7 +172,7 @@ const IDCardGenerator = (props) => {
                 <h2 className="vague">{userData.registrationNumber}</h2>
               </div>
               <hr/>
-
+             
             </div>
           </div>
         </div>

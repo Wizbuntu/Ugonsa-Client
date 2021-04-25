@@ -125,7 +125,7 @@ const DashboardDetail = (props) => {
 
           <div className="col-lg-4 col-xlg-3 col-md-5">
             {!Loading
-              ? <div className="card">
+              ? <React.Fragment><div className="card">
                   <div className="card-body">
                     <center className="m-t-30">
                       <img
@@ -143,7 +143,14 @@ const DashboardDetail = (props) => {
                             ? <span className="label label-success label-rounded">verified</span>
                             : userData.verification_status === "unverified"
                               ? <span className="label label-danger label-rounded">unverified</span>
-                              : <span className="label label-secondary label-rounded">loading...</span>
+                              : userData.verification_status === "suspended" ? 
+                              <span className="label label-megna label-rounded">suspended</span> :
+                              userData.verification_status === "inactive" ? 
+                              <span className="label label-inverse label-rounded">inactive</span> :
+                              userData.verification_status === "deregistered" ? 
+                              <span className="label label-primary label-rounded">deregistered</span> :
+
+                              <span className="label label-default label-rounded">loading...</span>
                       }
 
                       </div>
@@ -163,6 +170,9 @@ const DashboardDetail = (props) => {
                             <option value="verified">verified</option>
                             <option value="pending">pending</option>
                             <option value="unverified">unverified</option>
+                            <option value="suspended">suspended</option>
+                            <option value="deregistered">deregistered</option>
+                            <option value="inactive">inactive</option>
                             
                           </select>
                         </div>
@@ -189,6 +199,15 @@ const DashboardDetail = (props) => {
                     
                   </div>
                 </div>
+                {/* Upload degree certificate */}
+                {userData.nursingCertificate &&  <div className="card">
+                  <div className="card-body">
+                        <a href={`${userData.nursingCertificate}`} target="_blank" className="btn btn-outline-secondary btn-block btn-lg">View Degree Certificate</a>
+                        
+                  </div>
+                  </div>
+                  }
+                </React.Fragment>
               : <div className="card">
                 <div className="card-body text-center justify-content-md-center">
                   <center className="m-t-30 m-b-30">
@@ -317,6 +336,18 @@ const DashboardDetail = (props) => {
                         </div>
                       </div>
 
+                      {/* Country */}
+                        <div className="form-group">
+                            <label>Country</label>
+
+                            <input
+                              type="text"
+                              value={userData.country}
+                              className="form-control form-control-line"
+                              readOnly/>
+
+                        </div>
+
                       <div className="row">
                         {/* State of Origin */}
                         <div className="col-md-6">
@@ -347,11 +378,11 @@ const DashboardDetail = (props) => {
 
                       {/* Postal Address */}
                       <div className="form-group">
-                        <label className="col-md-12">Postal Address</label>
+                        <label className="col-md-12">Permanent Address</label>
                         <div className="col-md-12">
                           <textarea
                             type="text"
-                            value={userData.postal_address}
+                            value={userData.address}
                             className="form-control form-control-line"
                             readOnly></textarea>
                         </div>

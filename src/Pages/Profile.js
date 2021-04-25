@@ -15,6 +15,11 @@ import Dayjs from 'dayjs'
 // import react Helmet
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
+// import react hot toast
+import toast, {Toaster} from 'react-hot-toast';
+
+
+
 
 
 // init Profile component
@@ -34,6 +39,9 @@ const Profile = (props) => {
   // init Loading state
   const [Loading,
     setLoading] = useState(true)
+
+  // init updateDegreeLoading
+  const [updateDegreeLoading, setUpdateDegreeLoading] = useState(false)
 
   // init useEffect
   useEffect(() => {
@@ -88,6 +96,57 @@ const Profile = (props) => {
     })
   }
 
+
+
+  // init openUploadWidget
+  const openUploadWidget = () => {
+    window
+      .cloudinary
+      .openUploadWidget({
+        cloud_name: 'ugonsa',
+        upload_preset: 'rnaamhf3'
+      }, (error, result) => {
+        // check if error
+        if (error) {
+          return console.log(error)
+          
+        }
+        // update UpdateDegreeLoading
+        setUpdateDegreeLoading(true)
+
+        // get profileUpdateData
+        const profileUpdateData = {
+          user_id: userData.uid,
+          email: userData.email,
+          degree_certificate: result[0].secure_url
+        }
+
+
+        // axios request to update certificate
+        axios.post('/v1/api/update/user/certificate', profileUpdateData)
+        .then(({data}) => {
+          // update UpdateDegreeLoading
+          setUpdateDegreeLoading(false)
+            // if not success
+            if(!data.success) {
+              return toast.error(data.data)
+            }
+
+            // return success toast
+            return toast.success(data.data)
+        })
+        .catch((error) => {
+          // update UpdateDegreeLoading
+          setUpdateDegreeLoading(false)
+
+          console.log(error)
+          return toast.error("Oops! An error has occured")
+        })
+
+
+      })
+  }
+
   return (
     <React.Fragment>
          <HelmetProvider>
@@ -97,6 +156,8 @@ const Profile = (props) => {
               <title>Profile - Ugonsa</title>
              
             </Helmet>
+
+            <Toaster/>
          
 
       <div className="container-fluid">
@@ -105,6 +166,7 @@ const Profile = (props) => {
 
           <div className="col-lg-4 col-xlg-3 col-md-5">
             {!Loading?  
+            <React.Fragment>
             <div className="card">
               <div className="card-body">
                 <center className="m-t-30">
@@ -117,12 +179,25 @@ const Profile = (props) => {
                   <h4 className="card-title m-t-10">{userData.surname} {userData.firstName}</h4>
                   <div className="row text-center justify-content-md-center" style={{margin: "auto", display: 'block'}}>
                         {userData.verification_status === "pending"
-                          ? <span className="label label-warning label-rounded">pending</span>
+                          ? <div><span className="label label-warning label-rounded">pending</span>
+                            <p className="mt-3 text-secondary">Registered but awaiting verification</p>
+                          </div>
                           : userData.verification_status === "verified"
-                            ? <span className="label label-success label-rounded text-center">verified</span>
+                            ? <div><span className="label label-success label-rounded text-center">verified</span> 
+                              <p className="mt-3 text-secondary">Fully Registered</p>
+                            </div>
                             : userData.verification_status === "unverified"
-                              ? <span className="label label-danger label-rounded">unverified</span>
-                              : <span className="label label-secondary label-rounded">loading...</span>
+                              ? <div><span className="label label-danger label-rounded">unverified</span> 
+                                <p className="mt-3 text-secondary">Not yet a Registered Member</p>
+                              </div> 
+                              : userData.verification_status === "suspended" ? 
+                              <span className="label label-megna label-rounded">suspended</span> :
+                              userData.verification_status === "inactive" ? 
+                              <span className="label label-inverse label-rounded">inactive</span> :
+                              userData.verification_status === "deregistered" ? 
+                              <span className="label label-primary label-rounded">deregistered</span> :
+                              
+                              <span className="label label-default label-rounded">loading...</span>
                       }
 
                       </div>
@@ -144,6 +219,23 @@ const Profile = (props) => {
               </div>
              
             </div>
+            {/* Upload degree certificate */}
+            {!userData.nursingCertificate ?  <div className="card">
+              <div className="card-body">
+                    <button onClick={() => openUploadWidget()} className="btn btn-outline-secondary btn-block btn-lg">Upload Degree Certificate</button>
+                    {updateDegreeLoading && <p>Uploading certificate...</p>}
+                    
+              </div>
+              </div> : 
+               <div className="card">
+               <div className="card-body">
+                     <a href={`${userData.nursingCertificate}`} target="_blank" className="btn btn-outline-secondary btn-block btn-lg">View Degree Certificate</a>
+                    
+               </div>
+               </div>
+              }
+           
+            </React.Fragment>
             : <div className="card">
             <div className="card-body text-center justify-content-md-center">
               <center className="m-t-30 m-b-30">
@@ -271,6 +363,18 @@ const Profile = (props) => {
                         </div>
                       </div>
 
+                      {/* Country */}
+                        <div className="form-group">
+                              <label>Country</label>
+
+                              <input
+                                type="text"
+                                value={userData.country}
+                                className="form-control form-control-line"
+                                readOnly/>
+
+                        </div>
+
                       <div className="row">
                         {/* State of Origin */}
                         <div className="col-md-6">
@@ -301,11 +405,11 @@ const Profile = (props) => {
 
                       {/* Postal Address */}
                       <div className="form-group">
-                        <label className="col-md-12">Postal Address</label>
+                        <label className="col-md-12">Permanent Address</label>
                         <div className="col-md-12">
                           <textarea
                             type="text"
-                            value={userData.postal_address}
+                            value={userData.address}
                             className="form-control form-control-line"
                             readOnly></textarea>
                         </div>
@@ -377,6 +481,8 @@ const Profile = (props) => {
                        </div>
                       </div>
                       })}
+
+                    
 
                       <div className="form-group">
                         <div className="col-sm-12">

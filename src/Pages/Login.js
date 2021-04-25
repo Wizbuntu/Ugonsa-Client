@@ -32,9 +32,16 @@ const Login = (props) => {
   // init useEffect
   useEffect(() => {
       if(location.state && location.state.message) {
-        return toast.success(location.state.message)
+        // update messageAlert
+        setMessageAlert(location.state.message)
+
+        // return success
+       return toast.success(location.state.message)
       }
   }, [])
+
+  // init messageAlert
+  const [messageAlert, setMessageAlert] = useState("")
 
   // init login data state
   const [loginData, setLoginData] = useState({email: "", password: ""})
@@ -142,9 +149,18 @@ const Login = (props) => {
             </div>
 
           </div>
+          
+          {/* show alert message */}
+            {messageAlert && <div className="container w-50 mt-3">
+              <div className="alert alert-success" role="alert">
+                    {messageAlert}
+                </div>
+              </div>}
+          
+
         </div>
 
-        <div className="container-fluid mt-5">
+        <div className="container-fluid mt-3">
           <div className="row">
             <div className="col"></div>
             <div className="col-lg-5 col-xlg-6 col-md-5">
@@ -191,7 +207,7 @@ const Login = (props) => {
                       </p>
                     </div>
                     <p className="text-center">Don't have an account?
-                      <Link to="/register/new"> Register</Link>
+                      <Link to="/create/account"> Register</Link>
                     </p>
                   </form>
                 </div>

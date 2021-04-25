@@ -97,8 +97,8 @@ const Navbar = (props) => {
                     {props.authUser && props.authUser.admin ?
                       <img src={`${props.authUser && props.authUser.profilePic ? props.authUser.profilePic : '/assets/images/profile.png'}`}   alt="user"
                       className="rounded-circle"
-                      width="31" /> :
-                      <img src={`https://register.ugonsa.org/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt="user" className="rounded-circle" width="31" />
+                      style={{height: "40px", width: "40px", objectFit: "cover"}}/> :
+                      <img src={`https://register.ugonsa.org/${userProfilePic.replace(process.env.REACT_APP_IMAGE_FORMAT, '')}` || '/assets/images/profile.png'} alt="user" className="rounded-circle"  />
                     }
                   
                 </a>

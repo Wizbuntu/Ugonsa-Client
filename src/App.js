@@ -7,10 +7,8 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 // Register Page
 import Register from './Pages/Register'
 
-
-// OldMemberRegister Page
-import OldMemberRegister from './Pages/OldMemberRegister'
-
+// create Account 
+import CreateAccount from './Pages/CreateAccount'
 
 // Login Page
 import Login from './Pages/Login'
@@ -48,8 +46,6 @@ import ForgotPassword from './Pages/ForgotPassword'
 // import PasswordReset component
 import PasswordReset from './Pages/PasswordReset'
 
-// import Home Component
-import Home from './Pages/Home'
 
 
 
@@ -60,7 +56,7 @@ const App = () => {
         <Switch>
         
         {/* Home Page Route */}
-        <Route exact path="/" component={Home} /> 
+        <Route exact path="/" component={Login} /> 
 
          {/* Login Page Route */}
         <Route path="/login" exact component={Login} /> 
@@ -73,14 +69,12 @@ const App = () => {
 
         {/* password reset route */}
         <Route path="/user/password/reset/:token" exact component={PasswordReset} /> 
-        
+
        {/* New Registration Route */}
-       <Route path="/register/new" exact component={Register} />
+       <Route path="/user/register/:token" exact component={Register} />
 
-        {/* Old Member Registration  Route */}
-        <Route path="/register/old" exact component={OldMemberRegister} />
-
-       
+        {/* Create Account  Route */}
+        <Route path="/create/account" exact component={CreateAccount} />
       
        {/* Dashboard Route */}
         <AuthHoc path="/dashboard" exact component={Dashboard} />

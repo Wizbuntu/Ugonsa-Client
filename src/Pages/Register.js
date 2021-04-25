@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 // import UploadUtil
 import UploadUtil from '../Util/uploadUtil'
@@ -44,10 +44,53 @@ const config = {
 
 
 // init Register Page
-const Register = () => {
+const Register = (props) => {
+
+    // get confirmationToken
+    const confirmationToken = props.match.params.token
 
     // init useHistory
     const history = useHistory()
+
+    // init PageLoading state
+    const [PageLoading, setPageLoading] = useState(true)
+
+
+
+    // init useEffect
+    useEffect(() => {
+
+        // verify email confirmation token
+        axios.get(`/v1/api/user/email/confirm/${confirmationToken}`)
+        .then(({data}) => {
+            
+            // update pageLoading 
+            setPageLoading(false)
+
+            // if not success
+            if(!data.success) {
+                return history.push({pathname: '/create/account', state: {message: data.data}})
+            }   
+
+            // update registrationData
+            setRegistrationData({...registrationData, 
+                firstName: data.data.firstName,
+                surname: data.data.surname,
+                email: data.data.email,
+                password: data.data.password
+            })
+
+            // return success message
+            return toast.success("Email confirmation successful, You can register now")
+
+        })
+        .catch((error) => {
+            console.log(error)
+            return history.push({pathname: '/create/account', state: {message: "Oops! invalid or expired email confirmation token, please try again."}})
+        })
+
+    }, [])
+
 
     // init dateOfBirth
     const [dateofBirth, setDateOfBirth] = useState(new Date());
@@ -142,7 +185,7 @@ const Register = () => {
         setQualificationData(stateValues)
     }
     
-// ===================== PAYMENT CONFIG =================================
+// ===================== PAYMENT SECTION =================================
      // init payment onSuccess
         const onSuccess = (reference) => {
 
@@ -158,21 +201,22 @@ const Register = () => {
                 country: country,
                 state_of_origin: state_of_origin,
                 lga: lga,
-                postal_address: postal_address,
+                address: postal_address,
                 password: password,
                 dob: dateofBirth,
-                qualifications: qualificationData
+                qualifications: qualificationData,
+                WPkh_paid_DXJ: true
             }
 
              // axios post request
-            axios.post('/v1/api/register/new', registerData)
+            axios.post('/v1/api/user/register', registerData)
             .then(({data}) => {
                 // update loading to false
                 setLoading(false)
 
                 // check if not success
                 if(!data.success) {
-                   
+                    // return error
                     return toast.error(data.data)
                 }
 
@@ -197,7 +241,7 @@ const Register = () => {
         // initialize payment
         const initializePayment = usePaystackPayment(config);
 
-// =======================END PAYMENT CONFIG======================================================
+// =======================END PAYMENT SECTION======================================================
 
 
     // init handleSubmit function
@@ -252,21 +296,31 @@ const Register = () => {
              
             </Helmet>
 
-            <div className="page-container" style={{backgroundColor: "#efefef"}}>
-            <div className="page-breadcrumb">
-                <div className="row">
-                    <div className="col-sm-12 col-md-12 align-self-center">
-                       <Link to="/"><img width="150" height="150" alt="ugonsa-logo" className="img-fluid" style={{margin: "auto", display: "block"}} src="/assets/images/ugonsa_logo.png"/></Link>
+            {PageLoading ?  <div className="preloader">
+                        <div className="lds-ripple">
+                            <div className="lds-pos"></div>
+                            <div className="lds-pos"></div>
+                            <p className="mt-5">Verifying...</p>
+                        </div>
+                        
+                    </div> : 
+                           <div className="page-container" style={{backgroundColor: "#efefef"}}>
+                <div className="page-breadcrumb">
+                    <div className="row">
+                        <div className="col"></div>
+                        <div className="col-sm-4 col-md-4 align-self-center">
+                        <Link to="/"><img width="150" height="150" alt="ugonsa-logo" className="img-fluid" style={{margin: "auto", display: "block"}} src="/assets/images/ugonsa_logo.png"/></Link>
 
-                        <h2 className="page-title text-center">Create an Account</h2>
-                        <h5 className="text-center mt-4">Please fill the form below to register</h5>
-                        <p className="text-center mt-2">Note: You are advised to create an account with a valid email address because all vital information will be sent to the email you supplied.</p>
+                            <h2 className="page-title text-center">Create an Account</h2>
+                            <h5 className="text-center mt-4">Please fill the form below to complete your registration</h5>
+                            <p className="text-center mt-2">Note: You will be charged a non-refundable fee of &#8358; 2050</p>
+                        </div>
+                        <div className="col"></div>
+                        
                     </div>
-                    
                 </div>
-            </div>
         
-            <div className="container-fluid">
+                <div className="container-fluid">
                
                 <div className="row pr-3 pl-3">
                    
@@ -295,7 +349,7 @@ const Register = () => {
                                                 <div className="form-group">
                                                     <label className="col-md-12">Surname</label>
                                                     <div className="col-md-12">
-                                                        <input type="text" placeholder="Enter Surname" value={surname} onChange={handleChange('surname')} className="form-control form-control-line"/>
+                                                        <input type="text" placeholder="Enter Surname" value={surname} className="form-control form-control-line" readOnly/>
                                                     </div>
                                                 </div>
                                         </div>
@@ -305,7 +359,7 @@ const Register = () => {
                                                 <div className="form-group">
                                                     <label className="col-md-12">First Name</label>
                                                     <div className="col-md-12">
-                                                        <input type="text" placeholder="Enter First Name" value={firstName} onChange={handleChange('firstName')} className="form-control form-control-line"/>
+                                                        <input type="text" placeholder="Enter First Name" value={firstName} className="form-control form-control-line" readOnly/>
                                                     </div>
                                                 </div>
                                         </div>
@@ -329,7 +383,7 @@ const Register = () => {
                                             <div className="form-group">
                                                 <label htmlFor="email" className="col-md-12">Email</label>
                                                 <div className="col-md-12">
-                                                    <input type="email" placeholder="Enter Email" value={email} onChange={handleChange('email')}  className="form-control form-control-line"/>
+                                                    <input type="email" placeholder="Enter Email" value={email}  className="form-control form-control-line" readOnly/>
                                                 </div>
                                             </div>
                                         </div>
@@ -505,7 +559,7 @@ const Register = () => {
                                     <div className="form-group">
                                         <label className="col-md-12">Password</label>
                                         <div className="col-md-12">
-                                            <input type="password" value={password} onChange={handleChange('password')} placeholder="Enter Password" className="form-control form-control-line" />
+                                            <input type="password" value={password} placeholder="Enter Password" className="form-control form-control-line" readOnly/>
                                         </div>
                                       
                                     </div>
@@ -541,6 +595,9 @@ const Register = () => {
           
             <Footer/>
             </div>
+                    }
+
+         
        
             </HelmetProvider>
         </React.Fragment>

@@ -1,6 +1,7 @@
 //Validator
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone'
+import equals from 'validator/lib/equals'
 
 
 
@@ -189,6 +190,35 @@ export const oldMemberRegisterValidation = (registerData) => {
         return "Please enter registration number"
     }
 
+}
+
+
+// Create account validation
+export const createAccountValidation = (accountData) => {
+    if (!(accountData.firstName && accountData.surname)) {
+        return "Please enter first name or surname"
+    }
+
+    if (!accountData.email) {
+        return "Please enter email address"
+    }
+
+    if (!isEmail(accountData.email)) {
+        return "Please enter valid email address"
+    }
+
+    if (!(accountData.password && accountData.confirmPassword)) {
+        return "Please enter password or confirm password"
+    }
+
+
+    if (accountData.password.length < 6) {
+        return "Passwords must be greater than 6 characters"
+    }
+
+    if (!equals(accountData.password, accountData.confirmPassword)) {
+        return 'Passwords must be equal'
+    }
 }
 
 

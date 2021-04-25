@@ -73,7 +73,21 @@ const Dashboard = (props) => {
     const [userTotal, setUserTotal] = useState(0)
 
     // init pageIndex state
-    const [pageIndex, setPageIndex] = useState(1);
+    const [pageIndex, setPageIndex] = useState(1)
+
+    // init statisticsCount state
+    const [statisticsCount, setStatisticsCount] = useState({
+        totalUsers: 0,
+        verifiedUsers: 0,
+        unVerifiedUsers: 0,
+        pendingUsers: 0,
+        suspendedUsers: 0,
+        inActiveUsers: 0,
+        deRegisteredUsers: 0
+    })
+
+    // destructure statisticsCount 
+    const {totalUsers, verifiedUsers, deRegisteredUsers, unVerifiedUsers, pendingUsers, suspendedUsers, inActiveUsers} = statisticsCount
 
     // init usersHolder
     const usersHolder = useRef([])
@@ -88,8 +102,40 @@ const Dashboard = (props) => {
 
             // invoke getUsers function
             getUsers(pageIndex)
+
+            // get statisticsCount 
+            getStatisticsCount()
         
     }, [])
+
+    // init getStatisticsCount 
+    const getStatisticsCount =() => {
+        axios.get('/v1/api/user/statistics/all')
+        .then(({data}) => {
+            // check if not success
+            if(!data.success) {
+                return toast.error("Oops! User statistics error")
+            }
+
+            // get result 
+            const {result} = data
+
+            // update statisticsCount state
+            setStatisticsCount({...statisticsCount, 
+            totalUsers: result.totalUsers,
+            verifiedUsers: result.verifiedUsers,
+            unVerifiedUsers: result.unverifiedUsers,
+            pendingUsers: result.pendingUsers,
+            inActiveUsers: result.inactiveUsers,
+            suspendedUsers: result.suspendedUsers,
+            deRegisteredUsers: result.deRegisteredUsers
+            })
+        })
+        .catch((error) => {
+            console.log(error)
+            return toast.error("Oops! user statistics error")
+        })
+    }
 
 
     // init getUsers function
@@ -171,7 +217,16 @@ const Dashboard = (props) => {
                 if(user.item.verification_status === "unverified") {
                     return <td><span className="label label-danger label-rounded">unverified</span> </td>
                 }
-                return <td><span className="label label-primary label-rounded">loading</span> </td>
+                if(user.item.verification_status === "suspended") {
+                    return <td><span className="label label-megna label-rounded">suspended</span> </td>
+                }
+                if(user.item.verification_status === "inactive") {
+                    return <td> <span className="label label-inverse label-rounded">inactive</span> </td>
+                }
+                if(user.item.verification_status === "deregistered") {
+                    return <td> <span className="label label-primary label-rounded">deregistered</span> </td>
+                }
+                return <td><span className="label label-default label-rounded">loading</span> </td>
             } else {
 
                if(user.verification_status === "pending") {
@@ -183,7 +238,19 @@ const Dashboard = (props) => {
                 if(user.verification_status === "unverified") {
                 return <td><span className="label label-danger label-rounded">unverified</span> </td>
                 }
-                return <td><span className="label label-primary label-rounded">loading</span> </td>
+                if(user.verification_status === "suspended") {
+                    return <td><span className="label label-megna label-rounded">suspended</span> </td>
+                }
+                if(user.verification_status === "inactive") {
+                    return <td> <span className="label label-inverse label-rounded">inactive</span> </td>
+                }
+                if(user.verification_status === "deregistered") {
+                    return <td> <span className="label label-primary label-rounded">deregistered</span> </td>
+                }
+
+                
+
+                return <td><span className="label label-default label-rounded">loading</span> </td>
             }
     }
 
@@ -270,6 +337,93 @@ const Dashboard = (props) => {
             </Helmet>
 
         <div className="container-fluid mt-3">
+            {/* Statistics Count */}
+            <div className="row">
+                <div className="col-md-12">
+                <div className="card">
+                    <div className="card-body">
+                            <h5 className="card-title m-b-5">Total Members</h5>
+                            <h3 className="font-light">{totalUsers}</h3>
+                            <div className="m-t-20 text-center">
+                                <div id="earnings"></div>
+                            </div>
+                    </div>
+            </div>
+                </div>
+            </div>
+        <div className="row">
+            <div className="col-md-4">
+            <div className="card">
+                    <div className="card-body">
+                            <h5 className="card-title m-b-5">Deregistered Members</h5>
+                            <h3 className="font-light">{deRegisteredUsers}</h3>
+                            <div className="m-t-20 text-center">
+                                <div id="earnings"></div>
+                            </div>
+                    </div>
+            </div>
+            </div>
+            <div className="col-md-4">
+            <div className="card">
+                    <div className="card-body">
+                            <h5 className="card-title m-b-5">Verified Members</h5>
+                            <h3 className="font-light">{verifiedUsers}</h3>
+                            <div className="m-t-20 text-center">
+                                <div id="earnings"></div>
+                            </div>
+                    </div>
+            </div>
+            </div>
+            <div className="col-md-4">
+            <div className="card">
+                    <div className="card-body">
+                            <h5 className="card-title m-b-5">Pending Members</h5>
+                            <h3 className="font-light">{pendingUsers}</h3>
+                            <div className="m-t-20 text-center">
+                                <div id="earnings"></div>
+                            </div>
+                    </div>
+            </div>
+            </div>
+            
+        </div>
+        <div className="row">
+            <div className="col-md-4">
+            <div className="card">
+                    <div className="card-body">
+                            <h5 className="card-title m-b-5">Unverified Members</h5>
+                            <h3 className="font-light">{unVerifiedUsers}</h3>
+                            <div className="m-t-20 text-center">
+                                <div id="earnings"></div>
+                            </div>
+                    </div>
+            </div>
+            </div>
+            <div className="col-md-4">
+            <div className="card">
+                    <div className="card-body">
+                            <h5 className="card-title m-b-5">Suspended Members</h5>
+                            <h3 className="font-light">{suspendedUsers}</h3>
+                            <div className="m-t-20 text-center">
+                                <div id="earnings"></div>
+                            </div>
+                    </div>
+            </div>
+            </div>
+            <div className="col-md-4">
+            <div className="card">
+                    <div className="card-body">
+                            <h5 className="card-title m-b-5">Inactive/Dormant Members</h5>
+                            <h3 className="font-light">{inActiveUsers}</h3>
+                            <div className="m-t-20 text-center">
+                                <div id="earnings"></div>
+                            </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+
+        {/* Search Section */}
         <div className="row">
             <div className="col-lg-8 col-xlg-8 col-md-8">
                 <div className="card">
@@ -284,6 +438,8 @@ const Dashboard = (props) => {
                     </div>
                 </div>
             </div>
+
+            {/* Filter section */}
             <div className="col-lg-4 col-xlg-4 col-md-4">
                 <div className="card">
                     <div className="card-body pb-1">
@@ -295,6 +451,8 @@ const Dashboard = (props) => {
                                 <option value="verified">verified</option>
                                 <option value="pending">pending</option>
                                 <option value="unverified">unverified</option>
+                                <option value="suspended">suspended</option>
+                                <option value="inactive">inactive</option>
                             </select>
                         </div>
                     </div>
