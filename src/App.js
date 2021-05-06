@@ -46,6 +46,13 @@ import ForgotPassword from './Pages/ForgotPassword'
 // import PasswordReset component
 import PasswordReset from './Pages/PasswordReset'
 
+// import AccessToken component 
+import AccessToken from './Pages/AccessTokens'
+
+// import AccessTokenValidate component 
+import AccessTokenValidate from './Pages/AccessTokenValidate'
+
+
 
 
 
@@ -75,7 +82,11 @@ const App = () => {
 
         {/* Create Account  Route */}
         <Route path="/create/account" exact component={CreateAccount} />
-      
+
+        {/* Access token validate route */}
+        <Route path="/access/token/validate" exact component={AccessTokenValidate} />
+
+{/*========================= PROTECTED ROUTES ==============================================  */}
        {/* Dashboard Route */}
         <AuthHoc path="/dashboard" exact component={Dashboard} />
 
@@ -89,6 +100,10 @@ const App = () => {
         {/* Admin User Route */}
         <AuthHoc path="/admin/user" exact component={AdminUser} />
 
+         {/* Access token route */}
+         <AuthHoc path="/admin/access/token" exact component={AccessToken} />
+
+       
         {/* pdf Render */}
         <AuthHoc path="/pdf/render" exact component={PdfRender} />
 

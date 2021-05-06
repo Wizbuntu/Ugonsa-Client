@@ -54,6 +54,16 @@ const Sidebar = (props) => {
                         <span className="hide-menu">Admin Users</span>
                       </Link>
                     </li>
+
+                    {/* Tokens */}
+                    <li className="sidebar-item">
+                      <Link
+                        className="sidebar-link waves-effect waves-dark sidebar-link"
+                        to="/admin/access/token">
+                        <i className="mdi mdi-key"></i>
+                        <span className="hide-menu">Tokens</span>
+                      </Link>
+                    </li>
                   </React.Fragment>
                 : <li className="sidebar-item">
                   <Link
