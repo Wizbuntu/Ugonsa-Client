@@ -25,6 +25,7 @@ export const registerValidation = (registerData) => {
         return "Please enter a valid email"
     }
 
+
     // validate phone
     if (!registerData.phone) {
         return "Please enter Phone Number"
@@ -68,6 +69,8 @@ export const registerValidation = (registerData) => {
         return "Please enter password"
     }
 
+
+
     // validate date of birth
     if (!registerData.dob) {
         return "Please enter date of birth"
@@ -93,12 +96,11 @@ export const registerValidation = (registerData) => {
     if (!registerData.qualifications[0].regNumber) {
         return "Please enter registration number"
     }
-
 }
 
 
-// export OldRegisterValidation 
-export const oldMemberRegisterValidation = (registerData) => {
+//========================== export tokenRegistration===============================
+export const tokenRegistrationValidation = (registerData) => {
     // validate firstName
     if (!registerData.firstName) {
         return "Please enter first name"
@@ -115,6 +117,10 @@ export const oldMemberRegisterValidation = (registerData) => {
     if (!isEmail(registerData.email)) {
         return "Please enter a valid email"
     }
+    if (!equals(registerData.email, registerData.confirmEmail)) {
+        return "Email doesn't match confirm email"
+    }
+
 
     // validate phone
     if (!registerData.phone) {
@@ -122,16 +128,6 @@ export const oldMemberRegisterValidation = (registerData) => {
     }
     if (!isMobilePhone(registerData.phone)) {
         return "Please enter valid Phone Number"
-    }
-
-    // validate registrationNumber
-    if (!registerData.registrationNumber) {
-        return "Please enter your valid registration number"
-    }
-
-    // validate id card
-    if (!registerData.id_card_upload) {
-        return "Please upload a scanned image of your original ugonsa id card"
     }
 
     // validate profile pic
@@ -145,23 +141,34 @@ export const oldMemberRegisterValidation = (registerData) => {
     }
 
     // validate state of origin
+    if (!registerData.country) {
+        return "Please select country"
+    }
+
+    // validate state of origin
     if (!registerData.state_of_origin) {
         return "Please select state of origin"
     }
 
     // validate lga
     if (!registerData.lga) {
-        return "Please select LGA"
+        return "Please select LGA or County"
     }
 
     // validate postal address
-    if (!registerData.postal_address) {
+    if (!registerData.address) {
         return "Please enter postal address"
     }
 
     // validate password
     if (!registerData.password) {
         return "Please enter password"
+    }
+    if (registerData.password.length < 6) {
+        return "Password must not be less than 6 characters"
+    }
+    if (!equals(registerData.password, registerData.confirmPassword)) {
+        return "password is not equal to confirm password"
     }
 
     // validate date of birth
@@ -189,6 +196,12 @@ export const oldMemberRegisterValidation = (registerData) => {
     if (!registerData.qualifications[0].regNumber) {
         return "Please enter registration number"
     }
+
+    // Validate accessToken
+    if (!registerData.accessToken) {
+        return "Please provide a valid access token"
+    }
+
 
 }
 

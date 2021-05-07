@@ -7,6 +7,9 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 // Register Page
 import Register from './Pages/Register'
 
+// Register With Token
+import RegisterWithToken from './Pages/RegisterWithToken'
+
 // create Account 
 import CreateAccount from './Pages/CreateAccount'
 
@@ -49,9 +52,6 @@ import PasswordReset from './Pages/PasswordReset'
 // import AccessToken component 
 import AccessToken from './Pages/AccessTokens'
 
-// import AccessTokenValidate component 
-import AccessTokenValidate from './Pages/AccessTokenValidate'
-
 
 
 
@@ -83,9 +83,10 @@ const App = () => {
         {/* Create Account  Route */}
         <Route path="/create/account" exact component={CreateAccount} />
 
-        {/* Access token validate route */}
-        <Route path="/access/token/validate" exact component={AccessTokenValidate} />
+        {/* Register with token */}
+        <Route path="/token/register" exact component={RegisterWithToken} />
 
+       
 {/*========================= PROTECTED ROUTES ==============================================  */}
        {/* Dashboard Route */}
         <AuthHoc path="/dashboard" exact component={Dashboard} />

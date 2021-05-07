@@ -3,13 +3,11 @@ import React, {useRef, useEffect, useState} from 'react'
 // import id card styles
 import '../styles/pdfGen.css'
 
-// react to print
-import {useReactToPrint} from 'react-to-print';
+// import component as png
+import {exportComponentAsJPEG } from 'react-component-export-image';
 
 // import React router dom
 import {useLocation, useHistory} from 'react-router-dom'
-
-
 
 
 // init IDCard Generator component
@@ -61,27 +59,23 @@ const IDCardGenerator = (props) => {
   const [userQualification, setUserQualification] = useState([])
 
 
-
-  // init handlePrint
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current
-  });
-
   return (
     <React.Fragment>
-    <div className="container">
+    <div className="container" >
       <button
-        onClick={() => handlePrint()}
+        onClick={() => exportComponentAsJPEG(componentRef)}
         className="btn btn-secondary float-right m-2 mt-5 mb-4 print-button">
         <i className="mdi mdi-printer-settings"></i>
         Print ID Card</button> 
         
        
-      <div className="schLogo">
-        <img className="img-fluid" src="/assets/images/pics-logo.png" alt="school-logo"/>
-      </div>
+     
       <div>
+     
         <div className="idcontainer" ref={componentRef}>
+          <div className="schLogo">
+          <img className="img-fluid"src="/assets/images/ugonsa_logo.png" alt="school-logo"/>
+          </div>
 
           <div className="id-box">
             <div className="left-side">
@@ -123,9 +117,7 @@ const IDCardGenerator = (props) => {
             </div>
 
             <div className="right-side">
-              <div className="background-image">
-                <img className="mt-4" src="/assets/images/ugonsa_logo.png" alt="image"/>
-              </div>
+            
               <div className="designLogo">
                 <div className="flag">
                   <div className="color1"></div>

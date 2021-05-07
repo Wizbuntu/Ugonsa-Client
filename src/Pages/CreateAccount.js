@@ -86,8 +86,6 @@ const CreateAccount = () => {
     const handleChange = (data) => (e) => {
         // update accountDat state 
         setAccountData({...accountData, [data]: e.target.value})
-
-        console.log(accountData)
     }
 
 

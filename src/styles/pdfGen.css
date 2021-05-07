@@ -98,7 +98,7 @@ body {
 
 .left-side .text p {
     line-height: 15px;
-    margin-left: 5em;
+    margin-left: 3.5em;
     padding-bottom: 5px;
 }
 
@@ -141,8 +141,8 @@ body {
     height: 100px;
     width: 80px;
     position: absolute;
-    top: 23%;
-    left: 41.6%;
+    top: 20%;
+    right: 45%;
     z-index: 3333;
 }
 
@@ -262,7 +262,7 @@ body {
 @media screen and (max-width:991px) {
     .left-side .text p {
         line-height: 15px !important;
-        margin-left: 4em !important;
+        margin-left: 2em !important;
         padding-bottom: 2em !important;
     }
 }
@@ -280,8 +280,8 @@ body {
         height: 70px;
         width: 80px;
         position: absolute;
-        left: 41%;
-        top: 23%;
+        left: 45%;
+        top: 20%;
     }
     .background-image {
         width: 90%;
