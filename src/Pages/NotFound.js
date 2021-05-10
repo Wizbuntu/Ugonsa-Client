@@ -9,7 +9,7 @@ const NotFound = () => {
 
             <div className="container h-100">
                 <div className="row">
-                    <div className="col-md-12 text-center" style={{marginTop: "10%"}}>
+                    <div className="col-md-12" style={{marginTop: "10%", display: 'block', textAlign: 'center'}}>
                         <img alt="not-found" src="/assets/images/notFound.svg" className="img-fluid" style={{height: 300}}/>
                         <h1>Oops! Page Not Found</h1>
                     

@@ -12,6 +12,10 @@ import {useHistory} from 'react-router-dom'
 // import Dayjs
 import Dayjs from 'dayjs'
 
+// react country and state
+import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+
+
 // import react Helmet
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
@@ -39,6 +43,9 @@ const Profile = (props) => {
   // init Loading state
   const [Loading,
     setLoading] = useState(true)
+
+  // init UpdateProfileBtnLoading state 
+  const [ProfileBtnLoading, setProfileBtnLoading] = useState(false)
 
   // init updateDegreeLoading
   const [updateDegreeLoading, setUpdateDegreeLoading] = useState(false)
@@ -147,6 +154,84 @@ const Profile = (props) => {
       })
   }
 
+
+  // init handleOnChange func
+  const handleOnChange = (data) => (event) => {
+    // update userData state 
+    setUserData({...userData, [data]: event.target.value})
+  }
+
+  // init handleCountryChange func 
+  const handleCountryChange = (val) => {
+    // update userData state 
+    setUserData({...userData, country: val})
+  }
+
+  // init handleStateChange func 
+  const  handleStateChange = (val) => {
+    // update userData state 
+    setUserData({...userData, state_of_origin: val})
+  }
+
+  // init handleQualificationChange func 
+  const handleQualificationChange = (event, index, data) => {
+      // spread user qualifications
+      const _qualifications = [...userQualifications]
+
+      // splice object from _qualifications by index
+      const _qualificationObject = JSON.parse(_qualifications.splice(index, 1)[0])
+
+      // update obkect property
+      _qualificationObject[data] = event.target.value
+
+      // append object to _qualifications array
+      _qualifications.push(JSON.stringify(_qualificationObject))
+
+      // update userData state 
+      setUserQualifications(_qualifications)
+  }
+
+
+  // init handleSubmit func 
+  const handleSubmit = (event) => {
+
+      // update profileBtnLoading state 
+      setProfileBtnLoading(true)
+
+      // preventDefault 
+      event.preventDefault()
+
+      // get updateProfileData 
+      const _updateProfile = {
+        ...userData,
+        userQualifications: userQualifications
+      }
+
+      // axios request to profile update endpoint
+      axios.put(`/v1/api/user/profile/${userData.uid}`, _updateProfile)
+      .then(({data}) => {
+          // update profileBtnLoading state 
+        setProfileBtnLoading(false)
+
+        // if not success
+        if(!data.success) {
+          return toast.error(data.data)
+        }
+
+        return toast.success(data.data)
+      })
+      .catch((error) => {
+        // update profileBtnLoading state 
+      setProfileBtnLoading(false)
+
+        console.log(error)
+        return toast.error("Oops! An error has occured")
+      })
+
+      
+  }
+
+
   return (
     <React.Fragment>
          <HelmetProvider>
@@ -249,7 +334,7 @@ const Profile = (props) => {
           {!Loading
               ? <div className="card">
                   <div className="card-body">
-                    <form className="form-horizontal form-material">
+                    <form onSubmit={(event) => handleSubmit(event)} className="form-horizontal form-material">
                       <div className="row">
                         <div className="col-md-4">
                             {/* Surname */}
@@ -258,7 +343,7 @@ const Profile = (props) => {
                               <div className="col-md-12">
                                 <input
                                   type="text"
-                                  value={userData.surname}
+                                  value={userData.surname || ''}
                                   className="form-control form-control-line"
                                   readOnly/>
                               </div>
@@ -271,7 +356,7 @@ const Profile = (props) => {
                               <div className="col-md-12">
                                 <input
                                   type="text"
-                                  value={userData.firstName}
+                                  value={userData.firstName || ''}
                                   className="form-control form-control-line"
                                   readOnly/>
                               </div>
@@ -284,7 +369,7 @@ const Profile = (props) => {
                               <div className="col-md-12">
                                 <input
                                   type="text"
-                                  value={userData.otherName}
+                                  value={userData.otherName || ''}
                                   className="form-control form-control-line"
                                   readOnly/>
                               </div>
@@ -298,7 +383,7 @@ const Profile = (props) => {
                         <div className="col-md-12">
                           <input
                             type="text"
-                            value={userData.registrationNumber}
+                            value={userData.registrationNumber || ''}
                             className="form-control form-control-line"
                             readOnly/>
                         </div>
@@ -312,11 +397,13 @@ const Profile = (props) => {
 
                             <input
                               type="email"
-                              value={userData.email}
+                              onChange={handleOnChange('email')}
+                              value={userData.email || ''}
                               className="form-control form-control-line"
                               name="example-email"
                               id="example-email"
-                              readOnly/>
+                              required
+                              />
 
                           </div>
                         </div>
@@ -326,10 +413,11 @@ const Profile = (props) => {
                             <label>Phone</label>
 
                             <input
-                              type="phone"
-                              value={userData.phone}
+                              type="text"
+                              onChange={handleOnChange('phone')}
+                              value={userData.phone || ''}
                               className="form-control form-control-line"
-                              readOnly/>
+                              />
                           </div>
                         </div>
                       </div>
@@ -354,11 +442,13 @@ const Profile = (props) => {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label>Gender</label>
-                            <input
-                              type="text"
-                              value={userData.sex}
-                              className="form-control form-control-line"
-                              readOnly/>
+
+                              <select value={userData.sex || ''} onChange={handleOnChange('sex')} className="form-control form-control-line">
+                                  <option value="">Select Gender</option>
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
+                                                
+                              </select>
                           </div>
                         </div>
                       </div>
@@ -366,26 +456,23 @@ const Profile = (props) => {
                       {/* Country */}
                         <div className="form-group">
                               <label>Country</label>
-
-                              <input
-                                type="text"
-                                value={userData.country}
-                                className="form-control form-control-line"
-                                readOnly/>
-
+                                 <CountryDropdown
+                                    classes="form-control form-control-line"
+                                    value={userData.country || ''}
+                                    onChange={(val) => handleCountryChange(val)} />
                         </div>
 
                       <div className="row">
                         {/* State of Origin */}
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label>State of Origin</label>
+                            <label>State/Region</label>
 
-                            <input
-                              type="text"
+                            <RegionDropdown
+                              classes="form-control form-control-line"
+                              country={userData.country || ''}
                               value={userData.state_of_origin}
-                              className="form-control form-control-line"
-                              readOnly/>
+                              onChange={(val) => handleStateChange(val)} /> 
 
                           </div>
                         </div>
@@ -395,25 +482,31 @@ const Profile = (props) => {
                             <label>Local Government Area</label>
                             <input
                               type="text"
-                              value={userData.lga}
+                              onChange={handleOnChange('lga')}
+                              value={userData.lga || ''}
                               className="form-control form-control-line"
-                              readOnly/>
+                              />
                           </div>
                         </div>
 
                       </div>
 
                       {/* Postal Address */}
-                      <div className="form-group">
-                        <label className="col-md-12">Permanent Address</label>
+                      <div className="row">
                         <div className="col-md-12">
-                          <textarea
-                            type="text"
-                            value={userData.address}
-                            className="form-control form-control-line"
-                            readOnly></textarea>
+                            <div className="form-group">
+                            <label>Permanent Address</label>
+                                <textarea
+                                  type="text"
+                                  value={userData.address}
+                                  onChange={handleOnChange('address')}
+                                  className="form-control form-control-line"
+                                  ></textarea>
+                              </div>
+                           
                         </div>
                       </div>
+                      
                       <hr/>
                      
                       {userQualifications.map((qual, index) => {
@@ -422,11 +515,14 @@ const Profile = (props) => {
                            <div className="form-group">
                          <div className="col-md-12">Qualification</div>
                          <div className="col-md-12">
-                         <input
-                              type="text"
-                              value={JSON.parse(qual).qualification}
-                              className="form-control form-control-line"
-                              readOnly/>
+  
+                                <select value={JSON.parse(qual).qualification} onChange={(event) => handleQualificationChange(event, index, 'qualification')} className="form-control form-control-line">
+                                  <option value="">Select Qualification</option>
+                                  <option value="B.N.Sc/B.S.N/B.Sc Nursing">B.N.Sc/B.S.N/B.Sc Nursing</option>
+                                  <option value="M.Sc">M.Sc</option>
+                                  <option value="Ph.D">Ph.D</option>
+                                </select>
+                                {/* <small>{JSON.parse(qual).qualification}</small> */}
                          </div>
                        </div>
 
@@ -435,9 +531,10 @@ const Profile = (props) => {
                          <div className="col-md-12">
                          <input
                               type="text"
+                              onChange={(event) => handleQualificationChange(event, index, 'universityAttended')}
                               value={JSON.parse(qual).universityAttended}
                               className="form-control form-control-line"
-                              readOnly/>
+                              />
                          </div>
                        </div>
 
@@ -446,9 +543,10 @@ const Profile = (props) => {
                          <div className="col-md-12">
                          <input
                               type="text"
+                              onChange={(event) => handleQualificationChange(event, index, 'regNumber')}
                               value={JSON.parse(qual).regNumber}
                               className="form-control form-control-line"
-                              readOnly/>
+                              />
                          </div>
                        </div>
 
@@ -459,9 +557,10 @@ const Profile = (props) => {
                             <div className="col-md-12">
                             <input
                                   type="number"
+                                  onChange={(event) => handleQualificationChange(event, index, 'yearofEntry')}
                                   value={JSON.parse(qual).yearofEntry}
                                   className="form-control form-control-line"
-                                  readOnly/>
+                                  />
                             </div>
                           </div>
                          </div>
@@ -471,10 +570,11 @@ const Profile = (props) => {
                             <div className="col-md-12">Year of Graduation</div>
                             <div className="col-md-12">
                             <input
-                                  type="text"
+                                  type="number"
                                   value={JSON.parse(qual).yearofGraduation}
+                                  onChange={(event) => handleQualificationChange(event, index, 'yearofGraduation')}
                                   className="form-control form-control-line"
-                                  readOnly/>
+                                  />
                             </div>
                           </div>
                          </div>
@@ -485,11 +585,15 @@ const Profile = (props) => {
                     
 
                       <div className="form-group">
-                        <div className="col-sm-12">
-                          <button onClick={() => renderPdf()} className="btn btn-primary">
+                     
+                          <button onClick={() => renderPdf()} style={{float: 'left'}} className="btn btn-primary">
                             <i className="mdi mdi-printer-settings"></i> 
                              Print Preview</button>
-                        </div>
+                    
+                            {ProfileBtnLoading?  <button type="button" className="btn btn-secondary" style={{float: 'right'}} disabled>Loading...</button> : 
+                             <button type="submit" className="btn btn-secondary" style={{float: 'right'}}>Update Profile</button>
+                            }
+                           
                       </div>
                     </form>
                   </div>

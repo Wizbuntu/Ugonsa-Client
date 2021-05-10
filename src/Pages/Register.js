@@ -446,7 +446,7 @@ const Register = (props) => {
                                         <div className="col-md-6">
                                             {/* State */}
                                             <div className="form-group">
-                                                <label className="col-sm-12">State of Origin</label>
+                                                <label className="col-sm-12">State/Region</label>
                                                 <div className="col-sm-12">
                                                     <RegionDropdown
                                                     classes="form-control form-control-line"
@@ -491,7 +491,7 @@ const Register = (props) => {
                                                 <div className="col-sm-12">
                                                     <select onChange={(event) => handleQualificationChange(event, index, 'qualification')} className="form-control form-control-line">
                                                         <option value="">Select Qualification</option>
-                                                        <option value="B.N.Sc/B.Sc Nursing">B.N.Sc/B.Sc Nursing</option>
+                                                        <option value="B.N.Sc/B.S.N/B.Sc Nursing">B.N.Sc/B.S.N/B.Sc Nursing</option>
                                                         <option value="M.Sc">M.Sc</option>
                                                         <option value="Ph.D">Ph.D</option>
                                                         

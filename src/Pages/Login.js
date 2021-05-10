@@ -207,7 +207,7 @@ const Login = (props) => {
                       </p>
                     </div>
                     <p className="text-center">Don't have an account?
-                      <Link to="/create/account"> Register</Link>
+                      <Link to="/create/account"> Register</Link> or <Link to="/token/register">Register with Access Token</Link>
                     </p>
                   </form>
                 </div>

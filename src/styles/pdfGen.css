@@ -85,7 +85,7 @@ body {
 
 .left-side .image-layer img {
     width: 100%;
-    height: 100%;
+    height: 100px;
     object-fit: cover;
     object-position: center;
 }
@@ -98,7 +98,7 @@ body {
 
 .left-side .text p {
     line-height: 15px;
-    margin-left: 3.5em;
+    margin-left: 4.5em;
     padding-bottom: 5px;
 }
 
@@ -323,11 +323,11 @@ body {
         bottom: 5px;
         text-align: center;
     }
-    .left-side .text p {
+    /* .left-side .text p {
         line-height: 15px;
         margin-left: 5em;
         padding-bottom: 15px;
-    }
+    } */
     /*
     .left-side .text p span{
         color:rgb(7, 46, 7);

@@ -256,7 +256,7 @@ const RegisterWithToken = (props) => {
                                 <p className="p-2"><b>Steps to register with access token</b></p>
 
                                 <ul className="p-2">
-                                    <li className="p-2">Make payments (Registration Fee) to UGONSA bank account</li>
+                                    <li className="p-2">Make payments (Registration Fee: &#8358;2000) to UGONSA bank account: <b>3089525712</b>,  Bank: <b>FirstBank</b></li>
                                     <li className="p-2">Send proof of payment via email to <b>info@ugonsa.org</b> or <b>gnan2ugonsa@gmail.com</b></li>
                                     <li className="p-2">Wait for 24 hours to recieve your access token</li>
                                     <li className="p-2">Enter your access token in the "Access Token" field to create your account.</li>
@@ -386,7 +386,7 @@ const RegisterWithToken = (props) => {
                                         <div className="col-md-6">
                                             {/* State */}
                                             <div className="form-group">
-                                                <label className="col-sm-12">State of Origin</label>
+                                                <label className="col-sm-12">State/Region</label>
                                                 <div className="col-sm-12">
                                                     <RegionDropdown
                                                     classes="form-control form-control-line"
@@ -431,7 +431,7 @@ const RegisterWithToken = (props) => {
                                                 <div className="col-sm-12">
                                                     <select onChange={(event) => handleQualificationChange(event, index, 'qualification')} className="form-control form-control-line">
                                                         <option value="">Select Qualification</option>
-                                                        <option value="B.N.Sc/B.Sc Nursing">B.N.Sc/B.Sc Nursing</option>
+                                                        <option value="B.N.Sc/B.S.N/B.Sc Nursing">B.N.Sc/B.S.N/B.Sc Nursing</option>
                                                         <option value="M.Sc">M.Sc</option>
                                                         <option value="Ph.D">Ph.D</option>
                                                         

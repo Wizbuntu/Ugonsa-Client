@@ -1,5 +1,9 @@
 // React
-import React from 'react';
+import React, {useEffect} from 'react';
+
+// loadjs
+import loadjs from 'loadjs'
+
 
 // react router dom
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
@@ -62,54 +66,57 @@ const App = () => {
     <div>
         <Switch>
         
-        {/* Home Page Route */}
-        <Route exact path="/" component={Login} /> 
-
          {/* Login Page Route */}
-        <Route path="/login" exact component={Login} /> 
+        <Route path="/login" component={Login} /> 
         
          {/* Admin Login Page Route */}
-         <Route path="/admin/login" exact component={AdminLogin} /> 
+         <Route exact path="/admin/login" component={AdminLogin} /> 
 
         {/* forgot password route */}
-        <Route path="/forgot/password" exact component={ForgotPassword} /> 
+        <Route exact path="/forgot/password" component={ForgotPassword} /> 
 
         {/* password reset route */}
-        <Route path="/user/password/reset/:token" exact component={PasswordReset} /> 
+        <Route exact path="/user/password/reset/:token" component={PasswordReset} /> 
 
        {/* New Registration Route */}
-       <Route path="/user/register/:token" exact component={Register} />
+       <Route exact path="/user/register/:token" component={Register} />
 
         {/* Create Account  Route */}
-        <Route path="/create/account" exact component={CreateAccount} />
+        <Route exact path="/create/account" component={CreateAccount} />
 
         {/* Register with token */}
-        <Route path="/token/register" exact component={RegisterWithToken} />
+        <Route exact path="/token/register"  component={RegisterWithToken} />
 
        
 {/*========================= PROTECTED ROUTES ==============================================  */}
        {/* Dashboard Route */}
-        <AuthHoc path="/dashboard" exact component={Dashboard} />
+        <AuthHoc exact path="/dashboard"  component={Dashboard} />
 
         {/* Dashboard Detail Route */}
-        <AuthHoc path="/user/:id" exact component={DashboardDetail} />
+        <AuthHoc exact path="/user/:id"  component={DashboardDetail} />
 
 
         {/* Profile Route */}
-        <AuthHoc path="/profile" exact component={Profile} />
+        <AuthHoc exact path="/profile" component={Profile} />
 
         {/* Admin User Route */}
-        <AuthHoc path="/admin/user" exact component={AdminUser} />
+        <AuthHoc exact path="/admin/user" component={AdminUser} />
 
          {/* Access token route */}
-         <AuthHoc path="/admin/access/token" exact component={AccessToken} />
+         <AuthHoc exact path="/admin/access/token" component={AccessToken} />
 
        
         {/* pdf Render */}
-        <AuthHoc path="/pdf/render" exact component={PdfRender} />
+        <AuthHoc exact path="/pdf/render" component={PdfRender} />
 
          {/* ID Card */}
-         <AuthHoc path="/id/generate" exact component={IDCardGenerator} />
+         <AuthHoc exact path="/id/generate" component={IDCardGenerator} />
+
+         {/* Home Page Route */}
+        <Route exact path="/" component={Login} /> 
+
+        {/* 404 page */}
+        <Route path="*" component={NotFound} />
        
         </Switch>
 
