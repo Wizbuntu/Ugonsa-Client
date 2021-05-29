@@ -206,6 +206,26 @@ const DashboardDetail = (props) => {
   }
 
 
+  // render nursingDegreeCertificate
+  const renderNursingCertificate = () => {
+
+    // get nursing certificate
+    const degreeCertificateUrl = userData.nursingCertificate
+
+    // split secureUrl
+    const urlResult = degreeCertificateUrl.split('.')
+
+    // replace extension
+    const urlExt = urlResult.splice(-1, 1, "png")
+
+    // init final url
+    const finalUrl = urlResult.join('.')
+
+    return finalUrl
+
+  }
+
+
   return (
     <React.Fragment>
       <Toaster/>
@@ -292,7 +312,7 @@ const DashboardDetail = (props) => {
                 {/* Upload degree certificate */}
                 {userData.nursingCertificate &&  <div className="card">
                   <div className="card-body">
-                        <a href={`${userData.nursingCertificate}`} target="_blank" className="btn btn-outline-secondary btn-block btn-lg">View Degree Certificate</a>
+                        <a href={`${renderNursingCertificate()}`} target="_blank" className="btn btn-outline-secondary btn-block btn-lg">View Degree Certificate</a>
                         
                   </div>
                   </div>

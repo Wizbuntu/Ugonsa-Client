@@ -121,13 +121,24 @@ const Profile = (props) => {
         // update UpdateDegreeLoading
         setUpdateDegreeLoading(true)
 
+        // init secureUrl
+        const secureUrl = result[0].secure_url
+
+        // split secureUrl
+        const urlResult = secureUrl.split('.')
+
+        // replace extension
+        const urlExt = urlResult.splice(-1, 1, "png")
+
+        // init final url
+        const finalUrl = urlResult.join('.')
+
         // get profileUpdateData
         const profileUpdateData = {
           user_id: userData.uid,
           email: userData.email,
-          degree_certificate: result[0].secure_url
+          degree_certificate: finalUrl
         }
-
 
         // axios request to update certificate
         axios.post('/v1/api/update/user/certificate', profileUpdateData)
@@ -232,6 +243,27 @@ const Profile = (props) => {
   }
 
 
+    // render nursingDegreeCertificate
+    const renderNursingCertificate = () => {
+
+      // get nursing certificate
+      const degreeCertificateUrl = userData.nursingCertificate
+  
+      // split secureUrl
+      const urlResult = degreeCertificateUrl.split('.')
+  
+      // replace extension
+      const urlExt = urlResult.splice(-1, 1, "png")
+  
+      // init final url
+      const finalUrl = urlResult.join('.')
+  
+      return finalUrl
+  
+    }
+  
+
+
   return (
     <React.Fragment>
          <HelmetProvider>
@@ -314,7 +346,7 @@ const Profile = (props) => {
               </div> : 
                <div className="card">
                <div className="card-body">
-                     <a href={`${userData.nursingCertificate}`} target="_blank" className="btn btn-outline-secondary btn-block btn-lg">View Degree Certificate</a>
+                     <a href={`${renderNursingCertificate()}`} target="_blank" className="btn btn-outline-secondary btn-block btn-lg">View Degree Certificate</a>
                     
                </div>
                </div>
